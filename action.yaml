@@ -1,0 +1,85 @@
+name: 'csdp-report-image'
+description: 'Report image to csdp'
+inputs:
+  VERSION:
+    description: specify client version
+    required: false
+    default: 0.0.25
+  CF_IMAGE:
+    description: image reported, quay.io/codefresh/newly-built-image:0.0.1
+    required: true
+  CF_HOST:
+    description: "CSDP app-proxy exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
+    required: true
+  CF_VERBOSE:
+    description: "verbose output"
+    required: false
+  CF_CONTAINER_REGISTRY_INTEGRATION:
+    required: false
+    description: "list of container integration"
+  CF_ENRICHERS:
+    required: false
+    description: "list of integrations separated by commas: jira, github"
+  CF_INSECURE:
+    required: false
+    description: "security flag for standard registry protocol, when set to true it enables http protocol"
+  CF_WORKFLOW_URL:
+    required: false
+    description: "external url for the workflow"
+  CF_LOGS_URL:
+    required: false
+    description: "external url for the logs"
+  CF_GIT_BRANCH:
+    required: false
+    description: "The git branch to use to enrich"
+  CF_GIT_SHA:
+    required: false
+    description: "The git SHA to use to enrich"
+  CF_GIT_REPO:
+    required: false
+    description: "The GitHub repo to use to enrich"
+  CF_GIT_INTEGRATION:
+    required: false
+    description: "The integration key"
+  CF_JIRA_PROJECT_PREFIX:
+    required: false
+    description: "Jira project prefix"
+  CF_JIRA_MESSAGE:
+    required: false
+    description: "String that contains PREFIX-ISSUE_ID"
+  CF_JIRA_INTEGRATION:
+    required: false
+    description: "The integration key"
+  CF_JIRA_FAIL_ON_NOT_FOUND:
+    required: false
+    description: "fail in case of ticket not found"
+  CF_API_KEY:
+    description: "Codefresh API KEY"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      env:
+        VERSION: ${{ inputs.VERSION }}
+        CF_IMAGE: ${{ inputs.CF_IMAGE }}
+        CF_HOST: ${{ inputs.CF_HOST }}
+        CF_VERBOSE: ${{ inputs.CF_VERBOSE }}
+        CF_CONTAINER_REGISTRY_INTEGRATION: ${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}
+        CF_ENRICHERS: ${{ inputs.CF_ENRICHERS }}
+        CF_INSECURE: ${{ inputs.CF_INSECURE }}
+        CF_WORKFLOW_URL: ${{ inputs.CF_WORKFLOW_URL }}
+        CF_LOGS_URL: ${{ inputs.CF_LOGS_URL }}
+        CF_GIT_BRANCH: ${{ inputs.CF_GIT_BRANCH }}
+        CF_GIT_SHA: ${{ inputs.CF_GIT_SHA }}
+        CF_GIT_REPO: ${{ inputs.CF_GIT_REPO }}
+        CF_GIT_INTEGRATION: ${{ inputs.CF_GIT_INTEGRATION }}
+        CF_JIRA_PROJECT_PREFIX: ${{ inputs.CF_JIRA_PROJECT_PREFIX }}
+        CF_JIRA_MESSAGE: ${{ inputs.CF_JIRA_MESSAGE }}
+        CF_JIRA_INTEGRATION: ${{ inputs.CF_JIRA_INTEGRATION }}
+        CF_JIRA_FAIL_ON_NOT_FOUND: ${{ inputs.CF_JIRA_FAIL_ON_NOT_FOUND }}
+        CF_API_KEY: ${{ inputs.CF_API_KEY }}
+      run: |
+        env>cf_env
+        echo 'CF_CI_TYPE="github-actions"' >> cf_env
+        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
