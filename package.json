@@ -20,7 +20,7 @@
     "test:cov": "jest --coverage"
   },
   "engines": {
-    "node": "16.13.2"
+    "node": "16.14.2"
   },
   "dependencies": {
     "eventsource": "^2.0.1"
