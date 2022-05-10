@@ -1,4 +1,4 @@
-# csdp-report-image ..,.!x
+# csdp-report-image ..,.!xy
 Report created image to CSDP, for CI tools use.
 .
 
