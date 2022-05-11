@@ -6,8 +6,8 @@ module.exports = {
     },
     plugins: [
         '@typescript-eslint/eslint-plugin',
-        'unused-imports',
         'unicorn',
+        'unused-imports',
     ],
     extends: [
         'plugin:@typescript-eslint/recommended',
@@ -22,7 +22,6 @@ module.exports = {
     },
     ignorePatterns: ['.eslintrc.js', '*.d.ts'],
     rules: {
-        'no-process-env': 'error',
         'unicorn/better-regex': 'error',
         'unicorn/catch-error-name': 'error',
         'unicorn/consistent-function-scoping': 'error',
@@ -189,7 +188,7 @@ module.exports = {
         {
             files: ['config.*', 'index.ts'],
             rules: {
-                'no-process-env': 'off',
+                    'no-process-env': 'off',
             },
         },
     ],
