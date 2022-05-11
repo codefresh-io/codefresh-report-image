@@ -2,28 +2,29 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
         project: 'tsconfig.json',
-        sourceType: 'module'
+        sourceType: 'module',
     },
     plugins: [
         '@typescript-eslint/eslint-plugin',
         'unused-imports',
-        'unicorn'
+        'unicorn',
     ],
     extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
-        'plugin:import/typescript'
+        'plugin:import/typescript',
     ],
     root: true,
     env: {
         node: true,
-        jest: true
+        jest: true,
     },
     ignorePatterns: ['.eslintrc.js', '*.d.ts'],
     rules: {
         'no-process-env': 'error',
         'unicorn/better-regex': 'error',
+        'unicorn/catch-error-name': 'error',
         'unicorn/consistent-function-scoping': 'error',
         'unicorn/custom-error-definition': 'off',
         'unicorn/empty-brace-spaces': 'error',
@@ -34,7 +35,7 @@ module.exports = {
         'unicorn/import-index': 'off',
         'unicorn/new-for-builtins': 'error',
         'unicorn/no-array-push-push': 'error',
-        'unicorn/no-array-reduce': ['error', { 'allowSimpleOperations': true }],
+        'unicorn/no-array-reduce': 'error',
         'unicorn/no-console-spaces': 'error',
         'unicorn/no-hex-escape': 'error',
         'unicorn/no-instanceof-array': 'error',
@@ -45,7 +46,7 @@ module.exports = {
         'unicorn/no-new-array': 'error',
         'unicorn/no-new-buffer': 'error',
         'unicorn/no-object-as-default-parameter': 'error',
-        'unicorn/no-process-exit': 'off',
+        'unicorn/no-process-exit': 'error',
         'unicorn/no-this-assignment': 'error',
         'unicorn/no-unreadable-array-destructuring': 'error',
         'unicorn/no-unsafe-regex': 'off',
@@ -89,15 +90,15 @@ module.exports = {
         'unicorn/filename-case': [
             'error',
             {
-                'case': 'kebabCase'
-            }
+                'case': 'kebabCase',
+            },
         ],
         'import/order': ['error', {
             'newlines-between': 'always',
             'groups': [
                 'external',
-                'internal'
-            ]
+                'internal',
+            ],
         }],
         'unused-imports/no-unused-imports': 'error',
         '@typescript-eslint/naming-convention': [
@@ -105,49 +106,52 @@ module.exports = {
             {
                 'selector': 'default',
                 'format': ['camelCase'],
-                'leadingUnderscore': 'allow'
+                'leadingUnderscore': 'allow',
             },
             {
                 'selector': 'variable',
-                'format': ['camelCase', 'UPPER_CASE', 'PascalCase']
+                'format': ['camelCase', 'UPPER_CASE', 'PascalCase'],
             },
             {
                 'selector': 'enumMember',
-                'format': ['camelCase', 'UPPER_CASE']
+                'format': ['camelCase', 'UPPER_CASE'],
+            },
+            {
+                'selector': 'objectLiteralProperty',
+                'format': ['camelCase', 'UPPER_CASE'],
+                'leadingUnderscore': 'allow',
             },
             {
                 'selector': 'parameter',
                 'format': ['camelCase'],
-                'leadingUnderscore': 'allow'
+                'leadingUnderscore': 'allow',
             },
             {
                 'selector': 'memberLike',
                 'modifiers': ['private'],
                 'format': ['camelCase'],
-                'leadingUnderscore': 'allow'
+                'leadingUnderscore': 'allow',
             },
             {
                 'selector': 'typeLike',
-                'format': ['PascalCase']
-            }
+                'format': ['PascalCase'],
+            },
         ],
         'max-lines': ['error', 400],
         '@typescript-eslint/quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
         'array-bracket-spacing': ['error', 'always'],
-        'comma-dangle': ['error', 'always-multiline'],
         'comma-spacing': ['error', { 'before': false, 'after': true }],
         'key-spacing': ['error', { 'afterColon': true }],
         'object-curly-spacing': ['error', 'always'],
         '@typescript-eslint/keyword-spacing': ['error'],
         '@typescript-eslint/interface-name-prefix': 'off',
-        '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/semi': ['error', 'never'],
         '@typescript-eslint/member-ordering': 'error',
-        '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-unnecessary-condition': ['error']
+        '@typescript-eslint/no-unnecessary-condition': ['error'],
     },
     overrides: [
         {
@@ -158,35 +162,35 @@ module.exports = {
                     'error',
                     {
                         'selector': 'default',
-                        'format': ['camelCase']
+                        'format': ['camelCase'],
                     },
                     {
                         'selector': 'variable',
-                        'format': ['PascalCase', 'camelCase', 'UPPER_CASE']
+                        'format': ['PascalCase', 'camelCase', 'UPPER_CASE'],
                     },
                     {
                         'selector': 'parameter',
                         'format': ['camelCase'],
-                        'leadingUnderscore': 'allow'
+                        'leadingUnderscore': 'allow',
                     },
                     {
                         'selector': 'memberLike',
                         'modifiers': ['private'],
                         'format': ['camelCase'],
-                        'leadingUnderscore': 'allow'
+                        'leadingUnderscore': 'allow',
                     },
                     {
                         'selector': 'typeLike',
-                        'format': ['PascalCase']
-                    }
-                ]
-            }
+                        'format': ['PascalCase'],
+                    },
+                ],
+            },
         },
         {
             files: ['config.*', 'index.ts'],
             rules: {
-                'no-process-env': 'off'
-            }
-        }
-    ]
+                'no-process-env': 'off',
+            },
+        },
+    ],
 };
