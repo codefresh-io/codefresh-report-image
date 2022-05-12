@@ -3,7 +3,9 @@ import EventSource from 'eventsource'
 import { validate } from './validate'
 import { buildUrlHeaders } from './request-builder'
 
-
+/**
+ * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
+ */
 async function main(): Promise<void> {
     const verbose = process.argv.includes('verbose') || process.env['VERBOSE']
     if (verbose) {
@@ -47,7 +49,7 @@ async function main(): Promise<void> {
 
 main().then(() => { return }).catch((error) => {
         console.error(error)
-        // eslint-disable-next-line unicorn/no-process-exit
+        // Catchall for general errors
         process.exit(1)
     }
 )

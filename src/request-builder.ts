@@ -1,7 +1,9 @@
-
+/**
+ * remove codefresh vars prefix
+ * @param env
+ */
 function cleanThePrefixCF(env: Record<string, string|undefined>): Record<string, string|undefined> {
     return Object.keys(env)
-        // eslint-disable-next-line unicorn/no-array-reduce
         .reduce((obj, key) => {
             const k = key.replace(/^CF_/, '')
             obj[k] = env[key]
@@ -9,6 +11,11 @@ function cleanThePrefixCF(env: Record<string, string|undefined>): Record<string,
         }, {})
 }
 
+/**
+ * Build image-report url and headers
+ * @param payload
+ * @param esc
+ */
 export function buildUrlHeaders(payload: Record<string, string | undefined>, esc: (uriComponent: (string | number | boolean)) => string) {
     const parameters = cleanThePrefixCF(payload)
     const headers = { 'authorization': parameters['API_KEY'] }

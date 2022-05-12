@@ -1,4 +1,6 @@
-
+/**
+ * Validate mandatory env vars. address host default
+ */
 export function validate(): Record<string, string|undefined> {
     const payload = filterEnvVarPattern(process.env)
     if (!payload['CF_API_KEY']) {
@@ -16,10 +18,13 @@ export function validate(): Record<string, string|undefined> {
     return payload
 }
 
+/**
+ * Filter env for codefresh vars prefix
+ * @param env
+ */
 function filterEnvVarPattern(env: Record<string, string|undefined>): Record<string, string|undefined> {
     return Object.keys(env)
         .filter(key => (/^CF_[A-Z_]+$/.test(key)))
-        // eslint-disable-next-line unicorn/no-array-reduce
         .reduce((obj, key) => {
             obj[key] = env[key]
             return obj
