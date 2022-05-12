@@ -5,7 +5,7 @@ import { buildUrlHeaders } from './request-builder'
 
 
 async function main(): Promise<void> {
-    const verbose = process.argv.includes('verbose')
+    const verbose = process.argv.includes('verbose') || process.env['VERBOSE']
     if (verbose) {
         console.debug('Running with verbose log')
     }
