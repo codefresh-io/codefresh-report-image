@@ -11,7 +11,7 @@ async function main(): Promise<void> {
     if (verbose) {
         console.debug('Running with verbose log')
     }
-    const payload = validate()
+    const payload = validate(process.env)
     const { url, headers } = buildUrlHeaders(payload, encodeURIComponent)
     if (verbose) {
         console.debug(`Payload: ${JSON.stringify(payload, null, 2)}`)
@@ -30,14 +30,7 @@ async function main(): Promise<void> {
         })
         eventSource.addEventListener('error', (err) => {
             eventSource.close()
-            if (err.data) {
-                const { error, parameters } = JSON.parse(err.data)
-                const message = `Error:\t${error.name}: ${error.message}, parameters provided: ${Object.keys(parameters)}`
-                console.error(message)
-                reject(new Error(message))
-            } else {
-                reject(err)
-            }
+            reject(err)
         })
         eventSource.addEventListener('end', (ev) => {
             eventSource.close()
@@ -49,6 +42,11 @@ async function main(): Promise<void> {
 
 main().then(() => { return }).catch((error) => {
         console.error(error)
+        if (error.type=='error' && error.status===500) {
+            const tokenStart = (process.env['CF_API_KEY'] || '').slice(0, 6)
+            const tokenEnd = (process.env['CF_API_KEY'] || '').slice(-6)
+            console.info(`Error 500 are usually caused by providing an invalid CF_API_KEY, please check that the validity of the provided codefresh api token ${tokenStart}..${tokenEnd}`)
+        }
         // Catchall for general errors
         process.exit(1)
     }

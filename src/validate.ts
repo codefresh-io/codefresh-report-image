@@ -1,21 +1,22 @@
 /**
  * Validate mandatory env vars. address host default
  */
-export function validate(): Record<string, string|undefined> {
-    const payload = filterEnvVarPattern(process.env)
-    if (!payload['CF_API_KEY']) {
-        const message = `CF_API_KEY must be provided as environment variable.`
-        console.error(message)
-        throw new Error(message)
+export function validate(payload: Record<string, string|undefined>): Record<string, string|undefined> {
+    const filtered = filterEnvVarPattern(payload)
+    const messages: string[] = []
+    if (!filtered['CF_API_KEY']) {
+        messages.push(`CF_API_KEY must be provided as environment variable.`)
     }
-    if (!payload['CF_IMAGE']) {
-        const message = `CF_IMAGE must be provided as environment variable.`
-        console.error(message)
-        throw new Error(message)
+    if (!filtered['CF_IMAGE']) {
+        messages.push(`CF_IMAGE must be provided as environment variable.`)
     }
-    payload['CF_HOST'] = payload['CF_HOST'] || 'g.codefresh.io'
+    if (messages.length>0) {
+        console.error()
+        throw new Error(`Validation Error: ${JSON.stringify(messages)}`)
+    }
+    filtered['CF_HOST'] = filtered['CF_HOST'] || 'g.codefresh.io'
 
-    return payload
+    return filtered
 }
 
 /**
