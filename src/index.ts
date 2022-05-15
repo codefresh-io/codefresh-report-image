@@ -12,7 +12,7 @@ async function main(): Promise<void> {
         console.debug('Running with verbose log')
     }
     const payload = validate(process.env)
-    const { url, headers } = buildUrlHeaders(payload, encodeURIComponent)
+    const { url, headers } = buildUrlHeaders(payload)
     if (verbose) {
         console.debug(`Payload: ${JSON.stringify(payload, null, 2)}`)
         console.debug(`Sending request: ${url}, headers: ${JSON.stringify(headers)}`)

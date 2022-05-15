@@ -11,7 +11,6 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
         messages.push(`CF_IMAGE must be provided as environment variable.`)
     }
     if (messages.length>0) {
-        console.error()
         throw new Error(`Validation Error: ${JSON.stringify(messages)}`)
     }
     filtered['CF_HOST'] = filtered['CF_HOST'] || 'g.codefresh.io'

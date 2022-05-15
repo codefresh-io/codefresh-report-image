@@ -16,7 +16,8 @@ function cleanThePrefixCF(env: Record<string, string|undefined>): Record<string,
  * @param payload
  * @param esc
  */
-export function buildUrlHeaders(payload: Record<string, string | undefined>, esc: (uriComponent: (string | number | boolean)) => string) {
+export function buildUrlHeaders(payload: Record<string, string | undefined>) {
+    const esc = encodeURIComponent
     const parameters = cleanThePrefixCF(payload)
     const headers = { 'authorization': parameters['API_KEY'] }
     const host = parameters['HOST']
