@@ -1,0 +1,55 @@
+name: 'csdp-report-image'
+description: 'Report image to csdp'
+inputs:
+  inputs:
+    CF_RUNTIME:
+      required: false
+      type: string
+    CF_IMAGE:
+      required: true
+      type: string
+    CONTAINER_REGISTRY_INTEGRATION:
+      required: false
+      type: string
+    CF_ENRICHERS:
+      required: false
+      type: string
+    CF_INSECURE:
+      required: false
+      type: string
+    CF_WORKFLOW_URL:
+      required: false
+      type: string
+    CF_LOGS_URL:
+      required: false
+      type: string
+    CF_GIT_BRANCH:
+      required: false
+      type: string
+    CF_GIT_SHA:
+      required: false
+      type: string
+    CF_GIT_REPO:
+      required: false
+      type: string
+    CF_GIT_INTEGRATION:
+      required: false
+      type: string
+    CF_JIRA_PROJECT_PREFIX:
+      required: false
+      type: string
+    CF_JIRA_MESSAGE:
+      required: false
+      type: string
+    CF_JIRA_INTEGRATION:
+      required: false
+      type: string
+    CF_JIRA_FAIL_ON_NOT_FOUND:
+      required: false
+      type: string
+    secrets:
+      CF_API_KEY:
+        required: true
+runs:
+  using: 'docker'
+  image: 'safficodefresh/csdp-report-image:latest'
