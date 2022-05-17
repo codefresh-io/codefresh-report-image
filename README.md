@@ -10,8 +10,6 @@ Report created image to CSDP, for CI tools use.
   * default is empty
   * possible values several of: git, jira
 ## Optional
-* CF_RUNTIME: rtName
-  * default : empty would take the default
 * CF_CONTAINER_REGISTRY_INTEGRATION: "quay-1"
   * default : empty would take the default    
 * CF_INSECURE: true
@@ -28,7 +26,5 @@ Report created image to CSDP, for CI tools use.
 * CF_JIRA_MESSAGE: "${{ GIT_BRANCH }}"
 * CF_JIRA_INTEGRATION: "jira-1"
 * CF_JIRA_FAIL_ON_NOT_FOUND : ""
- 
 
-
-
+...
