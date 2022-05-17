@@ -2,9 +2,6 @@ name: 'csdp-report-image'
 description: 'Report image to csdp'
 inputs:
   inputs:
-    CF_RUNTIME:
-      required: false
-      type: string
     CF_IMAGE:
       required: true
       type: string
