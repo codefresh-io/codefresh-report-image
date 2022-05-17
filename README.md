@@ -26,4 +26,4 @@ Report created image to CSDP, for CI tools use.
 * CF_JIRA_MESSAGE: "${{ GIT_BRANCH }}"
 * CF_JIRA_INTEGRATION: "jira-1"
 * CF_JIRA_FAIL_ON_NOT_FOUND : ""
-
+.
