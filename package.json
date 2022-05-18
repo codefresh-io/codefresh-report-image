@@ -17,7 +17,8 @@
     "start:prod": "node dist/index.js",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "ci-test": "yarn install && yarn test && yarn prebuild"
   },
   "engines": {
     "node": "16.14.2"
