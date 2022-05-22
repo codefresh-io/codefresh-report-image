@@ -6,7 +6,7 @@ inputs:
     required: true
   CONTAINER_REGISTRY_INTEGRATION:
     required: false
-    type: string
+    description: list of enrichers separated by commas
   CF_ENRICHERS:
     required: false
     description: "list of integrations separated by commas: jira, github"
