@@ -5,7 +5,7 @@ inputs:
     CF_IMAGE:
       required: true
       type: string
-    CF_CONTAINER_REGISTRY_INTEGRATION:
+    CONTAINER_REGISTRY_INTEGRATION:
       required: false
       type: string
     CF_ENRICHERS:
@@ -48,53 +48,5 @@ inputs:
       CF_API_KEY:
         required: true
 runs:
-  using: 'composite'
-  steps:
-    - name: set env
-      shell: sh
-      run: |
-        # declare array of params for creating a cf_env file
-        declare -a params=(
-          "CF_HOST"                               
-          "CF_IMAGE"                              
-          "CF_CONTAINER_REGISTRY_INTEGRATION"     
-          "CF_ENRICHERS"                          
-          "CF_INSECURE"                           
-          "CF_WORKFLOW_URL"                       
-          "CF_LOGS_URL"                           
-          "CF_GIT_BRANCH"                         
-          "CF_GIT_SHA"                            
-          "CF_GIT_REPO"                           
-          "CF_GIT_INTEGRATION"                    
-          "CF_JIRA_PROJECT_PREFIX"                
-          "CF_JIRA_MESSAGE"                       
-          "CF_JIRA_INTEGRATION"                   
-          "CF_JIRA_FAIL_ON_NOT_FOUND"             
-          "CF_API_KEY"                            
-        )
-        for val in ${params[@]}; do
-          echo "$val=${!val}"  >> cf_env
-        done
-        cat cf_env >> $GITHUB_ENV
-    - name: report image
-      env:
-        CF_IMAGE: $CF_IMAGE
-        CONTAINER_REGISTRY_INTEGRATION:
-        CF_ENRICHERS:
-        CF_INSECURE:
-        CF_WORKFLOW_URL:
-        CF_LOGS_URL:
-        CF_GIT_BRANCH:
-        CF_GIT_SHA:
-        CF_GIT_REPO:
-        CF_GIT_INTEGRATION:
-        CF_JIRA_PROJECT_PREFIX:
-        CF_JIRA_MESSAGE:
-        CF_JIRA_INTEGRATION:
-        CF_JIRA_FAIL_ON_NOT_FOUND:
-        CF_API_KEY:
-      shell: sh
-      run: |
-        docker run --env-file=cf_env safficodefresh/csdp-report-image:latest
-
-
+  using: 'docker'
+  image: 'safficodefresh/csdp-report-image:latest'
