@@ -4,6 +4,12 @@ inputs:
   CF_IMAGE:
     description: image reported, quay.io/codefresh/newly-built-image:0.0.1
     required: true
+  CF_HOST:
+    description: "cluster address address: https://g.codefresh.io"
+    required: false
+  CF_VERBOSE:
+    description: "verbose output"
+    required: false
   CONTAINER_REGISTRY_INTEGRATION:
     required: false
     description: list of enrichers separated by commas
