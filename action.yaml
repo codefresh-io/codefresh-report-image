@@ -49,4 +49,4 @@ inputs:
         required: true
 runs:
   using: 'docker'
-  image: 'safficodefresh/csdp-report-image:latest'
+  image: Dockerfile
