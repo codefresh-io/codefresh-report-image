@@ -1,52 +1,51 @@
 name: 'csdp-report-image'
 description: 'Report image to csdp'
 inputs:
-  inputs:
-    CF_IMAGE:
-      required: true
-      type: string
-    CONTAINER_REGISTRY_INTEGRATION:
-      required: false
-      type: string
-    CF_ENRICHERS:
-      required: false
-      type: string
-    CF_INSECURE:
-      required: false
-      type: string
-    CF_WORKFLOW_URL:
-      required: false
-      type: string
-    CF_LOGS_URL:
-      required: false
-      type: string
-    CF_GIT_BRANCH:
-      required: false
-      type: string
-    CF_GIT_SHA:
-      required: false
-      type: string
-    CF_GIT_REPO:
-      required: false
-      type: string
-    CF_GIT_INTEGRATION:
-      required: false
-      type: string
-    CF_JIRA_PROJECT_PREFIX:
-      required: false
-      type: string
-    CF_JIRA_MESSAGE:
-      required: false
-      type: string
-    CF_JIRA_INTEGRATION:
-      required: false
-      type: string
-    CF_JIRA_FAIL_ON_NOT_FOUND:
-      required: false
-      type: string
-    secrets:
-      CF_API_KEY:
-        required: true
+  CF_IMAGE:
+    description: image reported, quay.io/codefresh/newly-built-image:0.0.1
+    required: true
+  CONTAINER_REGISTRY_INTEGRATION:
+    required: false
+    type: string
+  CF_ENRICHERS:
+    required: false
+    description: "list of integrations separated by commas: jira, github"
+  CF_INSECURE:
+    required: false
+    description: "security flag for standard registry protocol, when set to true it enables http protocol"
+  CF_WORKFLOW_URL:
+    required: false
+    description: "external url for the workflow"
+  CF_LOGS_URL:
+    required: false
+    description: "external url for the logs"
+  CF_GIT_BRANCH:
+    required: false
+    description: "The git branch to use to enrich"
+  CF_GIT_SHA:
+    required: false
+    description: "The git SHA to use to enrich"
+  CF_GIT_REPO:
+    required: false
+    description: "The GitHub repo to use to enrich"
+  CF_GIT_INTEGRATION:
+    required: false
+    description: "The integration key"
+  CF_JIRA_PROJECT_PREFIX:
+    required: false
+    description: "Jira project prefix"
+  CF_JIRA_MESSAGE:
+    required: false
+    description: "String that contains PREFIX-ISSUE_ID"
+  CF_JIRA_INTEGRATION:
+    required: false
+    description: "The integration key"
+  CF_JIRA_FAIL_ON_NOT_FOUND:
+    required: false
+    description: "fail in case of ticket not found"
+  CF_API_KEY:
+    description: "Codefresh API KEY"
+    required: true
 runs:
   using: 'docker'
   image: Dockerfile
