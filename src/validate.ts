@@ -2,7 +2,7 @@
  * Validate mandatory env vars. address host default
  */
 export function validate(payload: Record<string, string|undefined>): Record<string, string|undefined> {
-    const filtered = { ...filterEnvVarPattern(payload), ...filterGitActionsEnvVarInputPattern(payload) }
+    const filtered = filterEnvVarPattern(payload)
     const messages: string[] = []
     if (!filtered['CF_API_KEY']) {
         messages.push(`CF_API_KEY must be provided as environment variable.`)
@@ -27,20 +27,6 @@ function filterEnvVarPattern(env: Record<string, string|undefined>): Record<stri
         .filter(key => (/^CF_[A-Z_]+$/.test(key)))
         .reduce((obj, key) => {
             obj[key] = env[key]
-            return obj
-        }, {})
-}
-
-/**
- * Filter git actions env for codefresh vars prefix
- * @param env
- */
-function filterGitActionsEnvVarInputPattern(env: Record<string, string|undefined>): Record<string, string|undefined> {
-    const from = 'INPUT_'.length
-    return Object.keys(env)
-        .filter(key => (/^INPUT_CF_[A-Z_]+$/.test(key)))
-        .reduce((obj, key) => {
-            obj[key.slice(from)] = env[key]
             return obj
         }, {})
 }
