@@ -26,7 +26,9 @@ function filterEnvVarPattern(env: Record<string, string|undefined>): Record<stri
     return Object.keys(env)
         .filter(key => (/^CF_[A-Z_]+$/.test(key)))
         .reduce((obj, key) => {
-            obj[key] = env[key]
+            if (env[key]) { // skip empty
+                obj[key] = env[key]
+            }
             return obj
         }, {})
 }
