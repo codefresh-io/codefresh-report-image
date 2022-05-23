@@ -53,5 +53,10 @@ inputs:
     description: "Codefresh API KEY"
     required: true
 runs:
-  using: 'docker'
-  image: Dockerfile
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        VER=$(cat service.yaml | grep version | cut -d ':' -f 2 | tr -d ' ')
+        env>cf_env
+        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VER
