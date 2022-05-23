@@ -1,6 +1,10 @@
 name: 'csdp-report-image'
 description: 'Report image to csdp'
 inputs:
+  VERSION:
+    description: specify client version
+    required: false
+    default: 0.0.21
   CF_IMAGE:
     description: image reported, quay.io/codefresh/newly-built-image:0.0.1
     required: true
@@ -57,6 +61,4 @@ runs:
   steps:
     - shell: bash
       run: |
-        VER=$(cat service.yaml | grep version | cut -d ':' -f 2 | tr -d ' ')
-        env>cf_env
-        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VER
+        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$INPUT_VERSION
