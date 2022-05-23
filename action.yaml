@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.21
+    default: 0.0.23
   CF_IMAGE:
     description: image reported, quay.io/codefresh/newly-built-image:0.0.1
     required: true
