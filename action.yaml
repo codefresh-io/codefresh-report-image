@@ -4,19 +4,19 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.21
+    default: 0.0.26
   CF_IMAGE:
     description: image reported, quay.io/codefresh/newly-built-image:0.0.1
     required: true
   CF_HOST:
-    description: "cluster address address: https://g.codefresh.io"
-    required: false
+    description: "CSDP app-proxy exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
+    required: true
   CF_VERBOSE:
     description: "verbose output"
     required: false
-  CONTAINER_REGISTRY_INTEGRATION:
+  CF_CONTAINER_REGISTRY_INTEGRATION:
     required: false
-    description: list of enrichers separated by commas
+    description: "list of container integration"
   CF_ENRICHERS:
     required: false
     description: "list of integrations separated by commas: jira, github"
@@ -60,5 +60,26 @@ runs:
   using: "composite"
   steps:
     - shell: bash
+      env:
+        VERSION: ${{ inputs.VERSION }}
+        CF_IMAGE: ${{ inputs.CF_IMAGE }}
+        CF_HOST: ${{ inputs.CF_HOST }}
+        CF_VERBOSE: ${{ inputs.CF_VERBOSE }}
+        CF_CONTAINER_REGISTRY_INTEGRATION: ${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}
+        CF_ENRICHERS: ${{ inputs.CF_ENRICHERS }}
+        CF_INSECURE: ${{ inputs.CF_INSECURE }}
+        CF_WORKFLOW_URL: ${{ inputs.CF_WORKFLOW_URL }}
+        CF_LOGS_URL: ${{ inputs.CF_LOGS_URL }}
+        CF_GIT_BRANCH: ${{ inputs.CF_GIT_BRANCH }}
+        CF_GIT_SHA: ${{ inputs.CF_GIT_SHA }}
+        CF_GIT_REPO: ${{ inputs.CF_GIT_REPO }}
+        CF_GIT_INTEGRATION: ${{ inputs.CF_GIT_INTEGRATION }}
+        CF_JIRA_PROJECT_PREFIX: ${{ inputs.CF_JIRA_PROJECT_PREFIX }}
+        CF_JIRA_MESSAGE: ${{ inputs.CF_JIRA_MESSAGE }}
+        CF_JIRA_INTEGRATION: ${{ inputs.CF_JIRA_INTEGRATION }}
+        CF_JIRA_FAIL_ON_NOT_FOUND: ${{ inputs.CF_JIRA_FAIL_ON_NOT_FOUND }}
+        CF_API_KEY: ${{ inputs.CF_API_KEY }}
       run: |
-        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$INPUT_VERSION
+        env>cf_env
+        echo 'CF_CI_TYPE="github-actions"' >> cf_env
+        docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
