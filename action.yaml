@@ -4,13 +4,13 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.24
+    default: 0.0.25
   CF_IMAGE:
     description: image reported, quay.io/codefresh/newly-built-image:0.0.1
     required: true
   CF_HOST:
-    description: "cluster address address: https://g.codefresh.io"
-    required: false
+    description: "CSDP app-proxy exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
+    required: true
   CF_VERBOSE:
     description: "verbose output"
     required: false
@@ -81,4 +81,5 @@ runs:
         CF_API_KEY: ${{ inputs.CF_API_KEY }}
       run: |
         env>cf_env
+        echo 'CF_CI_TYPE="github-actions"' >> cf_env
         docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
