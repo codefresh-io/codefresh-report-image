@@ -10,10 +10,12 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
     if (!filtered['CF_IMAGE']) {
         messages.push(`CF_IMAGE must be provided as environment variable.`)
     }
+    if (!filtered['CF_HOST']) {
+        messages.push(`CF_HOST must be provided as app-proxy http/s address`)
+    }
     if (messages.length>0) {
         throw new Error(`Validation Error: ${JSON.stringify(messages)}`)
     }
-    filtered['CF_HOST'] = filtered['CF_HOST'] || 'g.codefresh.io'
 
     return filtered
 }
