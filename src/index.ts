@@ -17,6 +17,9 @@ async function main(): Promise<void> {
         console.debug(`Payload: ${JSON.stringify(payload, null, 2)}`)
         console.debug(`Sending request: ${url}, headers: ${JSON.stringify(headers)}`)
     }
+    if (payload['CF_CI_TYPE'] && payload['CF_WORKFLOW_URL']) {
+        console.info(`Running ${payload['CF_CI_TYPE']} URL: ${payload['CF_WORKFLOW_URL']}`)
+    }
     const waitFor = new Promise((resolve, reject) => {
         const eventSource = new EventSource(url, { headers })
         eventSource.addEventListener('report', function (event) {

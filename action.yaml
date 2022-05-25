@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.28
+    default: 0.0.29
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -126,6 +126,8 @@ runs:
         CF_JIRA_INTEGRATION: ${{ inputs.CF_JIRA_INTEGRATION }}
         CF_JIRA_FAIL_ON_NOT_FOUND: ${{ inputs.CF_JIRA_FAIL_ON_NOT_FOUND }}
       run: |
+        CF_WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
         env>cf_env
-        echo 'CF_CI_TYPE="github-actions"' >> cf_env
+        echo 'CF_CI_TYPE=github-actions' >> cf_env
+        echo "CF_WORKFLOW_URL=$CF_WORKFLOW_URL" >> cf_env
         docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
