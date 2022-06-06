@@ -9,6 +9,9 @@ export function buildUrlHeaders(payload: Record<string, string | undefined>) {
     delete payload['CF_API_KEY']
     delete payload['CF_HOST']
     const qs = Object.entries(payload).map(kv => `${esc(kv[0])}=${esc(kv[1] || '')}`).join('&')
-    const url = `${host}/api/image-report?${qs}`
+    const url = `${host}/app-proxy/api/image-report?${qs}`
+    if (payload['CF_LOCAL']) {
+        return { url: `${host}/api/image-report?${qs}`,  headers }
+    }
     return { url, headers }
 }
