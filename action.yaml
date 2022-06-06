@@ -20,12 +20,21 @@ inputs:
   CF_CONTAINER_REGISTRY_INTEGRATION:
     required: false
     description: "list of container integration"
-  CF_DOCKER_USERNAME:
+  CF_DOCKERHUB_USERNAME:
     required: false
     description: "Dockerhub username"
-  CF_DOCKER_PASSWORD:
+  CF_DOCKERHUB_PASSWORD:
     required: false
     description: "Dockerhub password"
+  CF_REGISTRY_USERNAME:
+    required: false
+    description: "Generic registry username"
+  CF_REGISTRY_PASSWORD:
+    required: false
+    description: "Generic registry password"
+  CF_REGISTRY_DOMAIN:
+    required: false
+    description: "Generic registry domain"
   CF_INSECURE:
     required: false
     description: "security flag for standard registry protocol, when set to true it enables http protocol"
@@ -99,8 +108,11 @@ runs:
         CF_IMAGE: ${{ inputs.CF_IMAGE }}
         CF_VERBOSE: ${{ inputs.CF_VERBOSE }}
         CF_CONTAINER_REGISTRY_INTEGRATION: ${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}
-        CF_DOCKER_USERNAME: ${{ inputs.CF_DOCKER_USERNAME }}
-        CF_DOCKER_PASSWORD: ${{ inputs.CF_DOCKER_PASSWORD }}
+        CF_DOCKERHUB_USERNAME: ${{ inputs.CF_DOCKERHUB_USERNAME }}
+        CF_DOCKERHUB_PASSWORD: ${{ inputs.CF_DOCKERHUB_PASSWORD }}
+        CF_REGISTRY_USERNAME: ${{ inputs.CF_REGISTRY_USERNAME }}
+        CF_REGISTRY_PASSWORD: ${{ inputs.CF_REGISTRY_PASSWORD }}
+        CF_REGISTRY_DOMAIN: ${{ inputs.CF_REGISTRY_DOMAIN }}
         CF_INSECURE: ${{ inputs.CF_INSECURE }}
         CF_WORKFLOW_URL: ${{ inputs.CF_WORKFLOW_URL }}
         CF_LOGS_URL: ${{ inputs.CF_LOGS_URL }}
