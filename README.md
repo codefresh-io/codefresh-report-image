@@ -1,26 +1,16 @@
 # csdp-report-image
-Report created image to CSDP, for CI tools use.
+This repository build a container image that Report created image to CSDP, for CI tools use.
+
 ##Required
 * CF_API_KEY
 * CF_IMAGE
-## Required with Default
 * CF_HOST:  yourcluster.company.io
+
+## Empty by Default
 * CF_ENRICHERS: git, jira
-  * default is empty
-  * possible values several of: git, jira
-## Optional
-* CF_CONTAINER_REGISTRY_INTEGRATION: "quay-1"
-  * default : empty would take the default    
-* CF_INSECURE: true
-  * default: false
-* CF_WORKFLOW_URL:
-* CF_LOGS_URL:
-### Optional section Git - specify if included in CF_ENRICHERS list
-* CF_GIT_BRANCH:
-* CF_GIT_SHA: 
-* CF_GIT_REPO:
-### optional section Jira - specify if included in CF_ENRICHERS list                                                         
-* CF_JIRA_PROJECT_PREFIX: "CR"
-* CF_JIRA_MESSAGE: "${{ GIT_BRANCH }}"
-* CF_JIRA_INTEGRATION: "jira-1"
-* CF_JIRA_FAIL_ON_NOT_FOUND : "true"
+  * specify enrich/integrate section to include. 
+* CF_CI_TYPE: github-actions
+  * specify the Calling type
+  
+## see field details at your installed cluster: 
+* https://yourcluster.company.io/app-proxy/api/image-report
