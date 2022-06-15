@@ -1,60 +1,75 @@
 import EventSource from 'eventsource'
 
 import { validate } from './validate'
-import { buildUrlHeaders } from './request-builder'
+import { tryParseJson, errors, buildUrlHeaders } from './utils'
+import { logger, workflowLogger } from './logger'
+
+const { EventSourceError } = errors
 
 /**
  * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
  */
-async function mainProcess(argv, env): Promise<void> {
+async function main(argv, env): Promise<void> {
     const verbose = argv.includes('verbose') || env['VERBOSE']
     if (verbose) {
-        console.debug('Running with verbose log')
+        logger.debug('running with verbose log')
     }
     const payload = validate(env)
     const { url, headers } = buildUrlHeaders(payload)
     if (verbose) {
-        console.debug(`Payload: ${JSON.stringify(payload, null, 2)}`)
-        console.debug(`Sending request: ${url}, headers: ${JSON.stringify(headers)}`)
+        logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
+        logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
     }
     if (payload['CF_CI_TYPE'] && payload['CF_WORKFLOW_URL']) {
-        console.info(`Running ${payload['CF_CI_TYPE']} URL: ${payload['CF_WORKFLOW_URL']}`)
+        logger.info(`CI provider: ${payload['CF_CI_TYPE']}, job URL: ${payload['CF_WORKFLOW_URL']}`)
     }
-    const waitFor = new Promise((resolve, reject) => {
-        const eventSource = new EventSource(url, { headers })
+    const eventSource = new EventSource(url, { headers })
+    const waitFor = new Promise<void>((resolve, reject) => {
+        
         eventSource.addEventListener('report', function (event) {
-            console.info(`report =>`, JSON.stringify(JSON.parse(event.data), null, 2))
+            logger.info(JSON.stringify(JSON.parse(event.data), null, 2))
         })
         eventSource.addEventListener('info', function (event) {
-            console.info(`\t\t${JSON.stringify(event.data)}`)
+            logger.info(event.data)
         })
         eventSource.addEventListener('warn', function (event) {
-            console.warn(`Warning:\t${JSON.stringify(event.data)}`)
+            logger.warn(event.data)
         })
-        eventSource.addEventListener('error', (err) => {
-            eventSource.close()
-            reject(err)
+        eventSource.addEventListener('workflow-log', function (event) {
+            const log = tryParseJson(event.data)
+            if (typeof log === 'object' && log.content && log.podName) {
+                workflowLogger.info({ pod: log.podName, message: log.content })
+            } else {
+                workflowLogger.info(event.data)
+            }
         })
-        eventSource.addEventListener('end', (ev) => {
+        eventSource.addEventListener('error', (errorEvent) => {
             eventSource.close()
-            resolve(ev)
+
+            const error = tryParseJson(errorEvent.data)
+            let name
+            let message
+            if (typeof error === 'string') {
+                message = error
+            } else if (typeof error === 'object') {
+                if (typeof error.message === 'string') {
+                    message = error.message
+                }
+                if (typeof error.name === 'string') {
+                    name = error.name
+                }
+            } else {
+                message = errorEvent.message || 'Unknown error. Something went wrong.'
+            }
+            reject(new EventSourceError(message, name))
+        })
+        eventSource.addEventListener('end', (event) => {
+            eventSource.close()
+            logger.info(event.data)
+            resolve()
         })
     })
     await waitFor
-}
-
-async function main(argv, env): Promise<void> {
-    try {
-        await mainProcess(argv, env)
-    } catch (error) {
-        console.error(error)
-        if (error.type=='error' && error.status===500) {
-            const tokenStart = (env['CF_API_KEY'] || '').slice(0, 6)
-            const tokenEnd = (env['CF_API_KEY'] || '').slice(-6)
-            console.info(`Error 500 are usually caused by providing an invalid CF_API_KEY, please check that the validity of the provided codefresh api token ${tokenStart}..${tokenEnd}`)
-        }
-        throw error
-    }
 }
 
 /**
@@ -63,11 +78,8 @@ async function main(argv, env): Promise<void> {
 export async function mainErrorHandling() {
     try {
         await main(process.argv, process.env)
-    } catch {
-        // Catchall for general errors
+    } catch (error) {
+        logger.error(error.toString())
         process.exit(1)
     }
 }
-
-
-
