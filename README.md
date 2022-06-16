@@ -1,5 +1,5 @@
 # csdp-report-image
-This repository build a container image that Report created image to CSDP, for CI tools use.
+This repository builds a container image that reports created image to Codefresh, for CI tools use.
 
 ## Required
 * CF_API_KEY
