@@ -1,3 +1,5 @@
+import { errors } from './utils'
+
 /**
  * Validate mandatory env vars. address host default
  */
@@ -13,8 +15,8 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
     if (!filtered['CF_HOST']) {
         messages.push(`CF_HOST must be provided as app-proxy http/s address`)
     }
-    if (messages.length>0) {
-        throw new Error(`Validation Error: ${JSON.stringify(messages)}`)
+    if (messages.length > 0) {
+        throw new errors.ValidationError(`Validation Error: ${JSON.stringify(messages)}`)
     }
 
     return filtered

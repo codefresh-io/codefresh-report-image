@@ -115,7 +115,7 @@ module.exports = {
             },
             {
                 'selector': 'objectLiteralProperty',
-                'format': ['camelCase', 'UPPER_CASE'],
+                'format': ['camelCase', 'UPPER_CASE', 'PascalCase'],
                 'leadingUnderscore': 'allow',
             },
             {
