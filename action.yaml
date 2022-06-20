@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.40
+    default: 0.0.45
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -58,9 +58,6 @@ inputs:
   CF_GIT_BRANCH:
     required: false
     description: "The git branch to use to enrich"
-  CF_GIT_SHA:
-    required: false
-    description: "The git SHA to use to enrich"
   CF_GIT_INTEGRATION:
     required: false
     description: "The integration key"
@@ -122,7 +119,6 @@ runs:
         CF_GIT_PROVIDER: ${{ inputs.CF_GIT_PROVIDER }}
         CF_GIT_REPO: ${{ inputs.CF_GIT_REPO }}
         CF_GIT_BRANCH: ${{ inputs.CF_GIT_BRANCH }}
-        CF_GIT_SHA: ${{ inputs.CF_GIT_SHA }}
         CF_GIT_INTEGRATION: ${{ inputs.CF_GIT_INTEGRATION }}
         ## Github
         CF_GITHUB_TOKEN: ${{ inputs.CF_GITHUB_TOKEN }}

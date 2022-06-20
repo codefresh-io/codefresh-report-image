@@ -1,4 +1,4 @@
-import { buildUrlHeaders } from '../request-builder'
+import { buildUrlHeaders } from '../utils'
 
 
 describe('request builder test', () => {
