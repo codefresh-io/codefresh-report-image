@@ -44,12 +44,6 @@ async function main(argv, env): Promise<void> {
             }
         })
         eventSource.addEventListener('error', (errorEvent) => {
-            if (Object.keys(errorEvent) == [ 'type' ]) {
-                return // fake ?
-            }
-            if (!errorEvent?.message ) {
-                return // fake ?
-            }
             eventSource.close()
 
             const error = tryParseJson(errorEvent.data)
@@ -65,7 +59,7 @@ async function main(argv, env): Promise<void> {
                     name = error.name
                 }
             } else {
-                message = errorEvent.message || `Unknown error. Something went wrong. ${JSON.stringify(errorEvent)}`
+                message = errorEvent.message || 'Unknown error. Something went wrong.'
             }
             reject(new EventSourceError(message, name))
         })
