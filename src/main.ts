@@ -59,7 +59,7 @@ async function main(argv, env): Promise<void> {
                     name = error.name
                 }
             } else {
-                message = errorEvent.message || 'Unknown error. Something went wrong.'
+                message = errorEvent.message || `Unknown error. Something went wrong. ${JSON.stringify(errorEvent)}`
             }
             reject(new EventSourceError(message, name))
         })
