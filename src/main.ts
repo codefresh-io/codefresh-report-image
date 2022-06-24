@@ -35,6 +35,9 @@ async function main(argv, env): Promise<void> {
         eventSource.addEventListener('warn', function (event) {
             logger.warn(event.data)
         })
+        eventSource.addEventListener('error', function (event) {
+            logger.error(event.data)
+        })
         eventSource.addEventListener('workflow-log', function (event) {
             const log = tryParseJson(event.data)
             if (typeof log === 'object' && log.content && log.podName) {
@@ -43,7 +46,7 @@ async function main(argv, env): Promise<void> {
                 workflowLogger.info(event.data)
             }
         })
-        eventSource.addEventListener('error', (errorEvent) => {
+        eventSource.addEventListener('fatal-error', (errorEvent) => {
             eventSource.close()
 
             const error = tryParseJson(errorEvent.data)

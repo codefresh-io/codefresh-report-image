@@ -18,7 +18,7 @@ const paint = (kind, message) => {
 
 export const logger = winston.createLogger({
     format: format.printf((info) => {
-        return paint(info.level, `${info.message}`)
+        return paint(info.level, info.message)
     }),
     transports: [ new winston.transports.Console() ],
 })
