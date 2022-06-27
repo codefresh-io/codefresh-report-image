@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.46
+    default: 0.0.47
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -125,6 +125,7 @@ runs:
         CF_GITHUB_API_HOST_URL: ${{ inputs.CF_GITHUB_API_HOST_URL }}
         CF_GITHUB_API_PATH_PREFIX: ${{ inputs.CF_GITHUB_API_PATH_PREFIX }}
         CF_GITHUB_CONTEXT: ${{ inputs.CF_GITHUB_CONTEXT }}
+
         # JIRA
         CF_JIRA_API_TOKEN: ${{ inputs.CF_JIRA_API_TOKEN }}
         CF_JIRA_EMAIL: ${{ inputs.CF_JIRA_EMAIL }}
@@ -133,9 +134,28 @@ runs:
         CF_JIRA_MESSAGE: ${{ inputs.CF_JIRA_MESSAGE }}
         CF_JIRA_INTEGRATION: ${{ inputs.CF_JIRA_INTEGRATION }}
         CF_JIRA_FAIL_ON_NOT_FOUND: ${{ inputs.CF_JIRA_FAIL_ON_NOT_FOUND }}
+
+        # github
+        CF_GITHUB_REF_NAME: ${{ github.ref_name }}
+        CF_GITHUB_COMMIT_MESSAGE: "${{ github.event.head_commit.message }}"
+        CF_GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"
+        CF_GITHUB_REPOSITORY: "${{ github.repository }}"
+
+
       run: |
+        # add defaults
+        CF_GIT_BRANCH=${CF_GIT_BRANCH:-$CF_GITHUB_REF_NAME}
+        CF_GIT_REPO=${CF_GIT_REPO:-$CF_GITHUB_REPOSITORY}
+        # built vars
         CF_WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        CF_GIT_PROVIDER=${CF_GIT_PROVIDER:-github}
+        CF_CI_TYPE=github-actions
         env>cf_env
-        echo 'CF_CI_TYPE=github-actions' >> cf_env
+        echo "CF_CI_TYPE=$CF_CI_TYPE" >> cf_env
         echo "CF_WORKFLOW_URL=$CF_WORKFLOW_URL" >> cf_env
+        echo "CF_GIT_PROVIDER=${CF_GIT_PROVIDER}" >> cf_env
+
+        echo "CF_GIT_BRANCH $CF_GIT_BRANCH"
+        echo "CF_GIT_REPO $CF_GIT_REPO"
+        echo "CF_GIT_PROVIDER $CF_GIT_PROVIDER"
         docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
