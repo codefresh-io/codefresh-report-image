@@ -28,28 +28,22 @@ Commit that resulted in the image being built
   ```
   - name: report image by action
         with:
-          CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
-          CF_ENRICHERS: "jira, git"
           CF_HOST: "https://my-runtime-url"
           CF_API_KEY: ${{ secrets.CF_TOKEN }}
           
-          #Codefresh Integrations to USE
+	  #Codefresh Integrations to USE
           CF_CONTAINER_REGISTRY_INTEGRATION: "dockerhub"
           CF_JIRA_INTEGRATION: "jira"
-
-                 
+	  
+	  CF_ENRICHERS: "jira, git"    
+	  CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
+          
           CF_GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-          
-          #Github metadata
-          CF_GIT_PROVIDER: "github"
-          CF_GIT_REPO: "idan-codefresh/example-github-action-use-csdp-report-image"
-          CF_GIT_BRANCH: "main"
-          
-	      #Jira issues that match
+	  
+	  #Jira issues that match
           CF_JIRA_MESSAGE: "CR-12293"
           CF_JIRA_PROJECT_PREFIX: "CR"
-        uses: codefresh-io/csdp-report-image@0.0.46
-
+        uses: codefresh-io/csdp-report-image@0.0.47
   ```
 
 
