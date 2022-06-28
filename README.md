@@ -31,16 +31,16 @@ Commit that resulted in the image being built
           CF_HOST: "https://my-runtime-url"
           CF_API_KEY: ${{ secrets.CF_TOKEN }}
           
-	  #Codefresh Integrations to USE
+          #Codefresh Integrations to USE
           CF_CONTAINER_REGISTRY_INTEGRATION: "dockerhub"
           CF_JIRA_INTEGRATION: "jira"
 	  
-	  CF_ENRICHERS: "jira, git"    
-	  CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
+          CF_ENRICHERS: "jira, git"    
+          CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
           
           CF_GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 	  
-	  #Jira issues that match
+          #Jira issues that match
           CF_JIRA_MESSAGE: "CR-12293"
           CF_JIRA_PROJECT_PREFIX: "CR"
         uses: codefresh-io/csdp-report-image@0.0.47
