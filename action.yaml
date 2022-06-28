@@ -159,4 +159,4 @@ runs:
         echo "CF_GIT_REPO $CF_GIT_REPO"
         echo "CF_GIT_PROVIDER $CF_GIT_PROVIDER"
         docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
- 
+  
