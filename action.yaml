@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.54
+    default: 0.0.55
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
