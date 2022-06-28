@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default:  0.0.48
+    default: 0.0.48
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -159,3 +159,4 @@ runs:
         echo "CF_GIT_REPO $CF_GIT_REPO"
         echo "CF_GIT_PROVIDER $CF_GIT_PROVIDER"
         docker run --env-file=cf_env quay.io/codefresh/csdp-report-image:$VERSION
+
