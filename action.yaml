@@ -4,11 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-<<<<<<< CR-12401-min-params
-    default: 0.0.53
-=======
-    default: 0.0.51
->>>>>>> main
+    default: 0.0.54
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
