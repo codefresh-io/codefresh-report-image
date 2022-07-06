@@ -9,8 +9,4 @@ describe('external env ', () => {
             const result = validate({ EXTERNAL_ENV })
             expect(result['CF_HOST']).toEqual( 'https://saffi.pipeline-team.cf-cd.com' )
     })
-    // it('test example empty', async () => {
-    //         const result = validate({ EXTERNAL_ENV: '{' })
-    //         expect(result['CF_HOST']).toEqual( 'https://saffi.pipeline-team.cf-cd.com' )
-    // })
 })
