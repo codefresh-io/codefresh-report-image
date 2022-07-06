@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.70
+    default: 0.0.71
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -156,7 +156,7 @@ runs:
         echo "CF_WORKFLOW_URL=$CF_WORKFLOW_URL" >> cf_env
         echo "CF_GIT_PROVIDER=${CF_GIT_PROVIDER}" >> cf_env
         # EXTERNAL_ENV=$(jq -n 'env'|base64)
-        # echo "EXTERNAL_ENV=$EXTERNAL_ENV">cf_env
+        echo "EXTERNAL_ENV=$EXTERNAL_ENV">>cf_env
         
         docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
   
