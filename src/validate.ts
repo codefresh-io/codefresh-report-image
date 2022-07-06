@@ -1,9 +1,13 @@
 import { errors } from './utils'
+import { atob } from 'buffer'
 
 /**
  * Validate mandatory env vars. address host default
  */
 export function validate(payload: Record<string, string|undefined>): Record<string, string|undefined> {
+    if (payload['EXTERNAL_ENV']) {
+        payload = JSON.parse(atob(payload['EXTERNAL_ENV']))
+    }
     const filtered = filterEnvVarPattern(payload)
     const messages: string[] = []
     if (!filtered['CF_API_KEY']) {
