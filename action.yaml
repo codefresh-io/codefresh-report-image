@@ -1,5 +1,5 @@
-name: 'csdp-report-image'
-description: 'Report image to csdp'
+name: 'codefresh-report-image'
+description: 'Report image to codefresh'
 inputs:
   VERSION:
     description: specify client version
@@ -9,7 +9,7 @@ inputs:
     description: "Codefresh API KEY"
     required: true
   CF_HOST:
-    description: "CSDP app-proxy exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
+    description: "Codefresh runtime exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
     required: true
   CF_VERBOSE:
     description: "verbose output"
