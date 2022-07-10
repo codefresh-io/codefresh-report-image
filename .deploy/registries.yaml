@@ -1,3 +1,3 @@
-csdp-report-image:
+codefresh-report-image:
   image:
-    repository: quay.io/codefresh/csdp-report-image
+    repository: quay.io/codefresh/codefresh-report-image
