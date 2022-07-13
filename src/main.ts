@@ -24,6 +24,7 @@ async function main(argv, env): Promise<void> {
         logger.info(`CI provider: ${payload['CF_CI_TYPE']}, job URL: ${payload['CF_WORKFLOW_URL']}`)
     }
     const eventSource = new EventSource(url, { headers })
+    eventSource.reconnectInterval = 1000*10000 // prevent retry. client should not issue a reconnect
     const waitFor = new Promise<void>((resolve, reject) => {
         
         eventSource.addEventListener('report', function (event) {
