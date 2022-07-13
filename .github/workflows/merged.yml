@@ -26,16 +26,4 @@ jobs:
     - name: Run latest-tag
       if: github.event.pull_request.merged == true
       uses: EndBug/latest-tag@latest
-      with:
-        # You can change the name of the tag or branch with this input.
-        # Default: 'latest'
-        ref: latest
 
-        # If a description is provided, the action will use it to create an annotated tag. If none is given, the action will create a lightweight tag.
-        # Default: ''
-        # description: Description for the tag
-
-        # Force-update a branch instead of using a tag.
-        # Default: false
-        # force-branch: tru
-      
