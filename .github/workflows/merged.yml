@@ -4,10 +4,11 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
+  pull_request:
+    types: [ closed ]
     branches:
     - main
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,9 +20,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout
+      if: github.event.pull_request.merged == true
       uses: actions/checkout@v3
 
     - name: Run latest-tag
+      if: github.event.pull_request.merged == true
       uses: EndBug/latest-tag@latest
       with:
         # You can change the name of the tag or branch with this input.
