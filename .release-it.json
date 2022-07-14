@@ -1,0 +1,19 @@
+
+{
+  "use" : "release-it --patch --ci",
+  "npm": {
+    "publish": false
+  },
+  "git": {
+    "commitMessage": "chore: release v${version}"
+  },
+  "github": {
+    "release": true
+  },
+  "hooks": {
+    "before:init": ["echo init"],
+    "after:bump": "echo 'afterbump';.deploy/pipelines/scripts/ci/name-version.sh > ./service.yaml",
+    "after:git:release": "echo After git push, before github release; echo 'after:git';git tag -f latest; git tag latest --force;git push --tags  --force",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
+  }
+}
