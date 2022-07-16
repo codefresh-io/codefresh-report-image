@@ -18,7 +18,8 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "ci-test": "yarn install && release-it -c .release-it.ci.json && yarn test && yarn prebuild",
+    "bump": "release-it -c .release-it.ci.json --ci --patch",
+    "ci-test": "yarn install && yarn bump && yarn test && yarn prebuild",
     "release": "yarn run release-it --patch --ci"
   },
   "engines": {
