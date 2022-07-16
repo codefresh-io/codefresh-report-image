@@ -10,6 +10,6 @@
   "hooks": {
     "before:init": ["echo init"],
     "after:bump": "echo 'afterbump';.deploy/pipelines/scripts/ci/name-version.sh > ./service.yaml",
-    "before:git:release": "echo After git push, before github release; echo 'after:git';git tag -f latest; git tag latest --force;git push --tags  --force"
+    "after:git:release": "echo After git push; echo 'after:git';git tag -f latest; git tag latest --force;git push --tags  --force"
   }
 }
