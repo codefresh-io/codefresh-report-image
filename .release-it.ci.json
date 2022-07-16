@@ -1,0 +1,14 @@
+
+{
+  "use" : "release-it --patch --ci",
+  "npm": {
+    "publish": false
+  },
+  "git": {
+    "commitMessage": "chore: release v${version}"
+  },
+  "hooks": {
+    "before:init": ["echo init"],
+    "after:bump": "echo 'afterbump';.deploy/pipelines/scripts/ci/name-version.sh > ./service.yaml"
+  }
+}
