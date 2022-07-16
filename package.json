@@ -18,8 +18,9 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "ci-test": "yarn install && release-it -c .release-it.ci.json && yarn test && yarn prebuild",
-    "release": "yarn run release-it --patch --ci"
+    "bump": "release-it -c .release-it.ci.json --ci --patch",
+    "ci-test": "yarn install && yarn test && yarn bump && yarn prebuild",
+    "release": "yarn run release-it --ci"
   },
   "engines": {
     "node": "16.14.2"
@@ -42,6 +43,7 @@
     "eslint-plugin-unused-imports": "^1.1.2",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
+    "release-it": "^15.1.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^28.0.2",
     "ts-node": "^10.7.0",
