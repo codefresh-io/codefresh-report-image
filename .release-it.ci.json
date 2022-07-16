@@ -1,11 +1,10 @@
-
 {
-  "use" : "release-it --patch --ci",
+  "use" : "release-it --patch --ci # bump the package and service.yaml",
   "npm": {
     "publish": false
   },
   "git": {
-    "commitMessage": "chore: release v${version}"
+    "commitMessage": "bump: v${version}"
   },
   "hooks": {
     "before:init": ["echo init"],
