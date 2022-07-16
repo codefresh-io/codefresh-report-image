@@ -4,7 +4,8 @@
     "publish": false
   },
   "git": {
-    "commitMessage": "bump: v${version}"
+    "commitMessage": "bump: v${version}",
+    "requireCleanWorkingDir": false
   },
   "hooks": {
     "before:init": ["echo init"],
