@@ -93,6 +93,13 @@ inputs:
   CF_JIRA_FAIL_ON_NOT_FOUND:
     required: false
     description: "fail in case of ticket not found"
+  # AWS
+  CF_AWS_ROLE:
+    required: false
+    description: "arn:aws:role/123456"
+  CF_AWS_REGION:
+    required: false
+    description: "us-east-1"
 runs:
   using: "composite"
   steps:
@@ -140,6 +147,10 @@ runs:
         GITHUB_REPOSITORY: "${{ github.repository }}"
         GITHUB_COMMIT_MESSAGE: "${{ github.event.head_commit.message }}"
         GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"
+
+        #AWS
+        CF_AWS_ROLE: "${{ inputs.CF_AWS_ROLE }}"
+        CF_AWS_REGION: "${{ inputs.CF_AWS_REGION }}"
 
 
       run: |
