@@ -4,7 +4,7 @@ inputs:
   VERSION:
     description: specify client version
     required: false
-    default: 0.0.86
+    default: 0.0.87
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -142,15 +142,15 @@ runs:
         CF_JIRA_INTEGRATION: "${{ inputs.CF_JIRA_INTEGRATION }}"
         CF_JIRA_FAIL_ON_NOT_FOUND: "${{ inputs.CF_JIRA_FAIL_ON_NOT_FOUND }}"
 
+        #AWS
+        CF_AWS_ROLE: "${{ inputs.CF_AWS_ROLE }}"
+        CF_AWS_REGION: "${{ inputs.CF_AWS_REGION }}"
+
         # github
         GITHUB_REF_NAME: "${{ github.ref_name }}"
         GITHUB_REPOSITORY: "${{ github.repository }}"
         GITHUB_COMMIT_MESSAGE: "${{ github.event.head_commit.message }}"
-        GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"
-
-        #AWS
-        CF_AWS_ROLE: "${{ inputs.CF_AWS_ROLE }}"
-        CF_AWS_REGION: "${{ inputs.CF_AWS_REGION }}"
+        GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"        
 
 
       run: |
