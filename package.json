@@ -1,6 +1,6 @@
 {
   "name": "csdp-report-image",
-  "version": "0.0.87",
+  "version": "0.0.0",
   "description": "CI tools client reporting a built image by calling image-report and receiving progress events",
   "main": "index.js",
   "repository": "git@github.com:codefresh-io/csdp-report-image.git",
@@ -18,8 +18,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "ci-test": "yarn install && yarn test && yarn prebuild",
-    "release": "yarn run release-it --patch --ci"
+    "ci-test": "yarn install && yarn test && yarn prebuild"
   },
   "engines": {
     "node": "16.14.2"
