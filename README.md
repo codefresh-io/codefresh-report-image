@@ -130,3 +130,4 @@ For each specific connection (such as jira) parameters can be provided explicitl
      - **description**: the message
      - required
      - ["examples",["fix CR-11312 "]]
+
