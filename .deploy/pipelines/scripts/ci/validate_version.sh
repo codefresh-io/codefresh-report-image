@@ -1,5 +1,4 @@
 #!/bin/sh
-
 echo ${GITHUB_TOKEN} | gh auth login --with-token
 export TARGET_BRANCH=$(gh api graphql -f repositoryOwner="${CF_REPO_OWNER}" -f repositoryName="${CF_REPO_NAME}" -f branchName="${CF_BRANCH}" -f query='
   query getTargetBranch($repositoryOwner: String!, $repositoryName: String!, $branchName: String!) {
