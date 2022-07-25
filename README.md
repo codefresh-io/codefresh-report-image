@@ -1,7 +1,7 @@
 # codefresh-report-image
 This image allows you to enrich images reported to Codefresh GitOps Platform. 
 Using this action you are able to report an image to Codefresh and enrich it with valuable information that will be displayed in Codefresh dashboards.
-
+
 ### Image Metadata
 * Name
 * Size
