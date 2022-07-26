@@ -35,7 +35,6 @@ Commit that resulted in the image being built
           CF_CONTAINER_REGISTRY_INTEGRATION: "dockerhub"
           CF_JIRA_INTEGRATION: "jira"
 	  
-          CF_ENRICHERS: "jira, git"    
           CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
           
           CF_GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
@@ -43,91 +42,103 @@ Commit that resulted in the image being built
           #Jira issues that match
           CF_JIRA_MESSAGE: "CR-12293"
           CF_JIRA_PROJECT_PREFIX: "CR"
-        uses: codefresh-io/csdp-report-image@0.0.47
+        uses: codefresh-io/codefresh-report-image@latest
   ```
 
 
 # Complete List of Arguments
-## Required
-* CF_API_KEY
-* CF_IMAGE
-* CF_HOST:  yourcluster.company.io
-
-## Empty by Default
-* CF_ENRICHERS: git, jira
-  * specify enrich/integrate section to include.
-* CF_CI_TYPE: github-actions
-  * specify the Calling type
-  
-## Sections 
-The environment variables are divided to sections and the use is controlled by the CF_ENRICHERS. 
-For each specific connection (such as jira) parameters can be provided explicitly or by naming the integration
-* either use single var CF_JIRA_INTEGRATION (provide the name) or specify all variables in explicit-jira-setup
-* Bellow is the list of all the CF_ environment variables. 
-
-
 ### service
- - #### CF_HOST
-     - **description**: The url for reaching you codefresh cluster runtime
-     - required
-     - ["example",["https://codefresh.yourdoamin.com:80"]]
- - #### CF_API_KEY
-     - **description**: Codefresh user token - authenticating with the codefresh runtime.
-     - required
-### mandatory
- - #### CF_IMAGE
-     - **description**: Image name reported
-     - required
-     - ["examples",["mydockerhub/pushedimage:fix"]]
- - #### CF_CONTAINER_REGISTRY_INTEGRATION
-     - **description**: Registry integration name
- - #### CF_ENRICHERS
-     - **description**: List of integrations for collecting metadata on the build image, specify blank for no integrated services, by default does both jira and git
-     - ["examples",["jira, git"]]
- - #### CF_WORKFLOW_URL
-     - **description**: Reported url of the workflow building the image.
-     - ["examples",["https://github.com/saffi-codefresh/csdp-report-image-github-action/actions/runs/2389116616"]]
- - #### CF_WORKFLOW_NAME
-     - **description**: Given workflow name parameter, Optional name to appear on codefresh platform page.
-     - ["examples",["Staging build step"]]
- - #### CF_CI_TYPE
-     - **description**: Name of integration type, used for filtering results by the reporting tool type
-     - ["examples",["git-action","classic","jenkins",""]]
+- #### CF_HOST
+   - **description**: Name of runtime to implement the enrichment
+   - required
+   - ["example",["https://codefresh.yourdoamin.com:80"]]
+   - **default**: [runtime_host_url]
+- #### CF_API_KEY
+   - **description**: Codefresh API key
+   - required
+   - secret
+### general
+- #### CF_IMAGE
+   - **description**: Image path to enrich
+   - required
+   - ["examples",["mydockerhub/pushedimage:fix"]]
+   - **default**: [full image path here, including tag]
+- #### CF_CONTAINER_REGISTRY_INTEGRATION
+   - **description**: Name of Container registry integration
+- #### CF_WORKFLOW_URL
+   - **description**: The reported URL of the workflow that builds the image.
+   - ["examples",["https://github.com/saffi-codefresh/csdp-report-image-github-action/actions/runs/2389116616"]]
+   - **default**: [URL of the workflow that builds the image]
+- #### CF_WORKFLOW_NAME
+   - **description**: The name assigned to the workflow that builds the image. When defined, the name is displayed in the Codefresh platform.
+   - ["examples",["Staging build step"]]
+- #### CF_CI_TYPE
+   - **description**: Name of integration type, used for filtering results by the reporting tool type
+   - ["examples",["git-action","classic","jenkins",""]]
 ### git
- - #### CF_GIT_BRANCH
-     - **description**: The git branch which is related for the commit
- - #### CF_GIT_REPO
-     - **description**: The the git repository used for building the image
-     - required
+- #### CF_GIT_BRANCH
+   - **description**: The git branch which is related for the commit
+- #### CF_GIT_REPO
+   - **description**: The the git repository used for building the image
+   - required
 ### explicit-git-setup
- - #### CF_GIT_PROVIDER
-     - **description**: The git integration type use (i.e. github)
-     - required
+- #### CF_GIT_PROVIDER
+   - **description**: The git integration type use (i.e. github)
+   - required
 ### github
- - #### CF_GITHUB_TOKEN
-     - **description**: When explicit authentication used: For github use, authenticate with a github-token
-     - required
-     - ["examples",["ghp_vVvA6oh5iCO...."]]
- - #### CF_GITHUB_API_URL
-     - **description**: Specify github host api url
-     - ["examples",["https://api.github.com"]]
+- #### CF_GITHUB_TOKEN
+   - **description**: GitHub Access token
+   - required
+   - ["examples",["ghp_vVvA6oh5iCO...."]]
+   - secret
+   - **default**: [github-personal-access-token]
+- #### CF_GITHUB_API_URL
+   - **description**: Specify github host api url
+   - ["examples",["https://api.github.com"]]
 ### gitlab
- - #### CF_GITLAB_TOKEN
-     - **description**: When explicit authentication used: For gitlab use, authenticate with a gitlab-token
-     - required
-     - ["examples",["glpat-CzJ...."]]
- - #### GITLAB_HOST_URL
-     - **description**: Specify gitlab host url
-     - ["examples",["https://gitlab.com"]]
+- #### CF_GITLAB_TOKEN
+   - **description**: When explicit authentication used: For gitlab use, authenticate with a gitlab-token
+   - required
+   - ["examples",["glpat-CzJ...."]]
+   - secret
+- #### CF_GITLAB_HOST_URL
+   - **description**: Specify gitlab host url
+   - ["examples",["https://gitlab.com"]]
+### bitbucket
+- #### CF_BITBUCKET_USERNAME
+   - **description**: Bitbucket username
+   - required
+- #### CF_BITBUCKET_PASSWORD
+   - **description**: Bitbucket password
+   - required
+   - secret
+### bitbucketServer
+- #### CF_BITBUCKET_USERNAME
+   - **description**: Bitbucket server username
+   - required
+- #### CF_BITBUCKET_PASSWORD
+   - **description**: Bitbucket server password
+   - required
+   - secret
+- #### CF_BITBUCKET_HOST_URL
+   - **description**: Bitbucket server host url
+   - required
+   - ["examples",["https://bitbucket-server:7990"]]
 ### jira
- - #### CF_JIRA_INTEGRATION
-     - **description**: When jira integration name is specified instead of providing explicit credentials
- - #### CF_JIRA_PROJECT_PREFIX
-     - **description**: Jira prefix for identifying the ticket number to use
-     - required
-     - ["examples",["CR"]]
- - #### CF_JIRA_MESSAGE
-     - **description**: the message
-     - required
-     - ["examples",["fix CR-11312 "]]
+- #### CF_JIRA_INTEGRATION
+   - **description**: Name of Jira integration
+   - **default**: [jira-registry-integration-name]
+- #### CF_JIRA_PROJECT_PREFIX
+   - **description**: Jira project filter
+   - required
+   - ["examples",["CR"]]
+   - **default**: [jira-project-prefix]
+- #### CF_JIRA_MESSAGE
+   - **description**: String starting with the issue ID to associate with image
+   - required
+   - ["examples",["fix CR-11312 "]]
+   - **default**: [issue id]
+- #### CF_JIRA_FAIL_ON_NOT_FOUND
+   - **description**: When enabled, Fail the image report when the specified Jira issue is not found.
+   - ["examples",["true"]]
 
