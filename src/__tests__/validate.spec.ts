@@ -8,7 +8,7 @@ describe('client report-image validation', () => {
         } catch (error) {
             expect(error.message).toBe(`Validation Error: ["CF_API_KEY must be provided as environment variable.",` +
                 `"CF_IMAGE must be provided as environment variable.",`+
-                `"CF_HOST must be provided as app-proxy http/s address"]`)
+                `"CF_HOST must be provided as app-proxy http/s address TEST"]`)
             return
         }
         fail(`should have thrown Validation Error`)
