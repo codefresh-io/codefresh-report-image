@@ -1,3 +1,5 @@
+import { GraphQLClient } from 'graphql-request'
+
 export const tryParseJson = (str: string) => {
     try {
         return JSON.parse(str)
@@ -13,7 +15,11 @@ export const tryParseJson = (str: string) => {
  */
  export function buildUrlHeaders(payload: Record<string, string | undefined>) {
     const esc = encodeURIComponent
-    const headers = { 'authorization': payload['CF_API_KEY'] }
+    const headers = { 'authorization': payload['CF_API_KEY']! }
+    const platformHost = payload['CF_HOST_URL'] || 'https://g.codefresh.io'
+    const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
+        headers
+    })
     const host = payload['CF_HOST'] as string
     delete payload['CF_API_KEY']
     delete payload['CF_HOST']

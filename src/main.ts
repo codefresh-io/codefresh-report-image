@@ -1,5 +1,6 @@
 import EventSource from 'eventsource'
 
+// import { GraphQLClient, gql, ClientError } from 'graphql-request'
 import { validate } from './validate'
 import { tryParseJson, errors, buildUrlHeaders } from './utils'
 import { logger, workflowLogger } from './logger'
@@ -14,7 +15,9 @@ async function main(argv, env): Promise<void> {
     if (verbose) {
         logger.debug('running with verbose log')
     }
+
     const payload = validate(env)
+
     const { url, headers } = buildUrlHeaders(payload)
     if (verbose) {
         logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)

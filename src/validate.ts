@@ -1,4 +1,5 @@
 import { errors } from './utils'
+import { logger } from './logger'
 
 /**
  * Validate mandatory env vars. address host default
@@ -18,7 +19,10 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
     if (!filtered['CF_RUNTIME_NAME'] && !filtered['CF_HOST'] ) {
         messages.push(`CF_RUNTIME_NAME must be provided as environment variable.`)
     }
+
+    logger.info(`filtered['CF_RUNTIME_NAME']: ${filtered['CF_RUNTIME_NAME']}`)
     if (filtered['CF_RUNTIME_NAME'] && filtered['CF_HOST'] ) {
+        logger.info('eti test')
         messages.push(`you can only specify CF_RUNTIME_NAME or CF_HOST. please delete one of them.`)
     }
     if (messages.length > 0) {
