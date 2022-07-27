@@ -13,7 +13,7 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
         messages.push(`CF_IMAGE must be provided as environment variable.`)
     }
     if (!filtered['CF_HOST']) {
-        messages.push(`CF_HOST must be provided as app-proxy http/s address`)
+        messages.push(`CF_HOST must be provided as app-proxy http/s address TEST`)
     }
     if (messages.length > 0) {
         throw new errors.ValidationError(`Validation Error: ${JSON.stringify(messages)}`)
