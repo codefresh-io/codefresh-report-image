@@ -12,8 +12,14 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
     if (!filtered['CF_IMAGE']) {
         messages.push(`CF_IMAGE must be provided as environment variable.`)
     }
-    if (!filtered['CF_HOST']) {
-        messages.push(`CF_HOST must be provided as app-proxy http/s address TEST2`)
+    // if (!filtered['CF_HOST']) {
+    //     messages.push(`CF_HOST must be provided as app-proxy http/s address TEST2`)
+    // }
+    if (!filtered['CF_RUNTIME_NAME'] && !filtered['CF_HOST'] ) {
+        messages.push(`CF_RUNTIME_NAME must be provided as environment variable.`)
+    }
+    if (filtered['CF_RUNTIME_NAME'] && filtered['CF_HOST'] ) {
+        messages.push(`you can only specify CF_RUNTIME_NAME or CF_HOST. please delete one of them.`)
     }
     if (messages.length > 0) {
         throw new errors.ValidationError(`Validation Error: ${JSON.stringify(messages)}`)
