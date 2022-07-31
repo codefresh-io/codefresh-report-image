@@ -23,7 +23,7 @@ export const tryParseJson = (str: string) => {
         delete payload['CF_HOST']
     }
     else {
-        host = getRuntimeIngressHost(runtimeName, headers)
+        host = await getRuntimeIngressHost(runtimeName, headers)
         delete payload['CF_RUNTIME_NAME']
     }
     delete payload['CF_API_KEY']
