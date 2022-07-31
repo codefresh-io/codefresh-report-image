@@ -2,7 +2,7 @@ import { buildUrlHeaders } from '../utils'
 
 
 describe('request builder test', () => {
-    it('not clean CF_', async () => {
+    it('not clean CF_', async () => { //todo: change tests
         const
             { url, headers } = await buildUrlHeaders({
                 'CF_API_KEY': 'the-token',
