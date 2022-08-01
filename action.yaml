@@ -12,7 +12,7 @@ inputs:
     description: "Codefresh runtime exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
     required: false
   CF_RUNTIME_NAME:
-    description: "Name of runtime to implement the enrichment"
+    description: "Codefresh runtime name"
     required: true
   CF_VERBOSE:
     description: "verbose output"
@@ -44,6 +44,9 @@ inputs:
   CF_WORKFLOW_URL:
     required: false
     description: "external url for the workflow"
+  CF_WORKFLOW_NAME:
+    required: false
+    description: "The name assigned to the workflow that builds the image. When defined, the name is displayed in the Codefresh platform."
   CF_LOGS_URL:
     required: false
     description: "external url for the logs"
@@ -123,6 +126,7 @@ runs:
         CF_REGISTRY_DOMAIN: "${{ inputs.CF_REGISTRY_DOMAIN }}"
         CF_INSECURE: "${{ inputs.CF_INSECURE }}"
         CF_WORKFLOW_URL: "${{ inputs.CF_WORKFLOW_URL }}"
+        CF_WORKFLOW_NAME: "${{ inputs.CF_WORKFLOW_NAME }}"
         CF_LOGS_URL: "${{ inputs.CF_LOGS_URL }}"
 
         CF_ENRICHERS: "${{ inputs.CF_ENRICHERS }}"
@@ -154,7 +158,9 @@ runs:
         GITHUB_REF_NAME: "${{ github.ref_name }}"
         GITHUB_REPOSITORY: "${{ github.repository }}"
         GITHUB_COMMIT_MESSAGE: "${{ github.event.head_commit.message }}"
-        GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"        
+        GITHUB_PAYLOAD_MESSAGE: "${{ github.event.client_payload.message }}"
+        GITHUB_WORKFLOW_NAME: "${{ github.repository }}/${{ github.run_id }}"
+        GITHUB_WORKFLOW_URL: "${{ github.server_url	}}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
 
       run: |
@@ -162,7 +168,8 @@ runs:
         export CF_GIT_BRANCH="${CF_GIT_BRANCH:-$GITHUB_REF_NAME}"
         export CF_GIT_REPO="${CF_GIT_REPO:-$GITHUB_REPOSITORY}"
         # built vars
-        export CF_WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+        export CF_WORKFLOW_URL="${CF_WORKFLOW_URL:-$GITHUB_WORKFLOW_URL}"
+        export CF_WORKFLOW_NAME="${CF_WORKFLOW_NAME:-$GITHUB_WORKFLOW_NAME}"
         export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
         export CF_CI_TYPE=github-actions
         
