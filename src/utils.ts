@@ -1,3 +1,4 @@
+import * as utils from './utils'
 import { GraphQLClient, gql } from 'graphql-request'
 import { get } from 'lodash'
 export const tryParseJson = (str: string) => {
@@ -36,7 +37,7 @@ export const tryParseJson = (str: string) => {
 }
 
 
-async function getRuntimeIngressHost(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<string> {
+export async function getRuntimeIngressHost(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<string> {
     const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
         headers
     })
