@@ -14,8 +14,13 @@ async function main(argv, env): Promise<void> {
     if (verbose) {
         logger.debug('running with verbose log')
     }
+    logger.debug(`before validate`)
     const payload = validate(env)
+    logger.debug(`after validate`)
     const { url, headers } = buildUrlHeaders(payload)
+    logger.debug(`after buildUrlHeaders`)
+    logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
+    logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
     if (verbose) {
         logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
         logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
