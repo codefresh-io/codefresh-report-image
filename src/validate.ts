@@ -1,4 +1,4 @@
-import { errors } from './utils'
+import { errors } from './errors'
 
 /**
  * Validate mandatory env vars. address host default
