@@ -26,23 +26,40 @@ Commit that resulted in the image being built
 
 ## Example - github-actions
   ```
-  - name: report image by action
-        with:
-          CF_RUNTIME_NAME: "codefresh-hosted"
-          CF_API_KEY: ${{ secrets.CF_TOKEN }}
-          
-          #Codefresh Integrations to USE
-          CF_CONTAINER_REGISTRY_INTEGRATION: "dockerhub"
-          CF_JIRA_INTEGRATION: "jira"
-	  
-          CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
-          
-          CF_GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-	  
-          #Jira issues that match
-          CF_JIRA_MESSAGE: "CR-12293"
-          CF_JIRA_PROJECT_PREFIX: "CR"
-        uses: codefresh-io/codefresh-report-image@latest
+
+- name: report image
+  with:
+    # Name of runtime to implement the enrichment
+    CF_RUNTIME_NAME: 'codefresh-hosted'
+
+    # Codefresh API key !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
+    # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
+    CF_API_KEY: ${{ secrets.CF_TOKEN }}
+
+    # Image path to enrich
+    CF_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:tag
+
+    # Name of Container registry integration
+    CF_CONTAINER_REGISTRY_INTEGRATION: 'testghjmjhg'
+
+    # The git branch which is related for the commit
+    CF_GIT_BRANCH: '${{ github.ref_name }}'
+
+    # GitHub Access token !! Committing a plain text token is a security risk. We highly recommend using an encrypted secrets. !!
+    # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
+    CF_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Name of Jira integration
+    CF_JIRA_INTEGRATION: 'eti-jira'
+
+    # Jira project filter
+    CF_JIRA_PROJECT_PREFIX: 'CR'
+
+    # String starting with the issue ID to associate with image
+    CF_JIRA_MESSAGE: 'CR-12293'
+
+
+  uses: codefresh-io/codefresh-report-image@latest
   ```
 
 
