@@ -1,10 +1,12 @@
 import EventSource from 'eventsource'
 
 import { validate } from './validate'
-import { tryParseJson, errors, buildUrlHeaders } from './utils'
+import { Utils }  from './utils'
+import {  errors } from './errors'
 import { logger, workflowLogger } from './logger'
 
 const { EventSourceError } = errors
+
 
 /**
  * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
@@ -15,7 +17,7 @@ async function main(argv, env): Promise<void> {
         logger.debug('running with verbose log')
     }
     const payload = validate(env)
-    const { url, headers } = buildUrlHeaders(payload)
+    const { url, headers } = await Utils.buildUrlHeaders(payload)
     if (verbose) {
         logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
         logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
@@ -37,7 +39,7 @@ async function main(argv, env): Promise<void> {
             logger.warn(event.data)
         })
         eventSource.addEventListener('workflow-log', function (event) {
-            const log = tryParseJson(event.data)
+            const log = Utils.tryParseJson(event.data)
             if (typeof log === 'object' && log.content && log.podName) {
                 workflowLogger.info({ pod: log.podName, message: log.content })
             } else {
@@ -47,7 +49,7 @@ async function main(argv, env): Promise<void> {
         eventSource.addEventListener('error', (errorEvent) => {
             eventSource.close()
 
-            const error = tryParseJson(errorEvent.data)
+            const error = Utils.tryParseJson(errorEvent.data)
             let name
             let message
             if (typeof error === 'string') {
