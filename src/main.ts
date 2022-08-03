@@ -1,7 +1,7 @@
 import EventSource from 'eventsource'
 
 import { validate } from './validate'
-import { Utils } from './utils'
+import { Utils }  from './utils'
 import {  errors } from './errors'
 import { logger, workflowLogger } from './logger'
 

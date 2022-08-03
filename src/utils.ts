@@ -2,12 +2,13 @@ import { GraphQLClient, gql } from 'graphql-request'
 import { get } from 'lodash'
 
 import { errors } from './errors'
-export class Utils {
+
+export namespace Utils {
     /**
      * Build image-report url and headers
      * @param payload
      */
-    static async buildUrlHeaders(payload: Record<string, string | undefined>): Promise<{ url: string, headers: { authorization: string } }> {
+     export async function buildUrlHeaders(payload: Record<string, string | undefined>): Promise<{ url: string, headers: { authorization: string } }> {
         const esc = encodeURIComponent
         const headers = { 'authorization': payload['CF_API_KEY']! }
         const runtimeName = payload['CF_RUNTIME_NAME']
@@ -16,7 +17,7 @@ export class Utils {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
-            host = await this.getRuntimeIngressHost(runtimeName, headers)
+            host = await Utils.getRuntimeIngressHost(runtimeName, headers)
             delete payload['CF_RUNTIME_NAME']
         }
         delete payload['CF_API_KEY']
@@ -28,7 +29,7 @@ export class Utils {
         return { url, headers }
     }
 
-    static async getRuntimeIngressHost(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<string> {
+    export async function getRuntimeIngressHost(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<string> {
         const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
             headers
         })
@@ -44,12 +45,12 @@ export class Utils {
         const ingressHost = get(res, 'runtime.ingressHost')
         if (!ingressHost) {
             const message = res.runtime ? `ingress host is not defined on your '${runtimeName}' runtime` : `runtime '${runtimeName}' does not exist`
-            throw new errors.ValidationError(`Validation Error: ${message}`)
+            throw new errors.ValidationError(message)
         }
         return ingressHost
     }
 
-    static tryParseJson = (str: string) => {
+    export function tryParseJson (str: string) {
         try {
             return JSON.parse(str)
         } catch {

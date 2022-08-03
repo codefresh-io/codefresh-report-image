@@ -19,7 +19,7 @@ export function validate(payload: Record<string, string|undefined>): Record<stri
         messages.push(`You can only specify CF_RUNTIME_NAME or CF_HOST. please delete one of them.`)
     }
     if (messages.length > 0) {
-        throw new errors.ValidationError(`Validation Error: ${JSON.stringify(messages)}`)
+        throw new errors.ValidationError(`${JSON.stringify(messages)}`)
     }
 
     return filtered
