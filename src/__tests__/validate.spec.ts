@@ -16,7 +16,7 @@ describe('client report-image validation', () => {
         try {
             validate({ CF_API_KEY: '1', alsoIgnored: 'ignored', IGNORED: 'ignored too', CF_IMAGE: 'testImage', CF_HOST: `host.io`, CF_RUNTIME_NAME: 'runtime' })
         } catch (error) {
-            const expectedErrorMsg = 'Validation Error: ["You can only specify CF_RUNTIME_NAME or CF_HOST. please delete one of them."]'
+            const expectedErrorMsg = '["You can only specify CF_RUNTIME_NAME or CF_HOST. please delete one of them."]'
             expect(error.message).toBe(expectedErrorMsg)
             return
         }
