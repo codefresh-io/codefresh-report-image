@@ -64,4 +64,4 @@ Commit that resulted in the image being built
 
 
 # Complete List of Arguments
-  https://codefresh.io/csdp-docs/docs/integrations/github-actions/#codefresh-github-action-integration-arguments
+  [https://codefresh.io/csdp-docs/docs/integrations/github-actions/#codefresh-github-action-integration-arguments](https://codefresh.io/csdp-docs/docs/integrations/ci-integrations/github-actions/#github-action-codefresh-integration-arguments)
