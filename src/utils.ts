@@ -17,7 +17,7 @@ export namespace Utils {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
-            host = await Utils.getRuntimeIngressHost(runtimeName, headers)
+            host = await Utils.getRuntimeIngressHost(runtimeName, headers, 'http://eti-platform.ngrok.io')
             delete payload['CF_RUNTIME_NAME']
         }
         delete payload['CF_API_KEY']
