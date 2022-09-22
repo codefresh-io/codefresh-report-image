@@ -17,9 +17,10 @@ export namespace Utils {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
-            const platformHost = payload['CF_HOST_URL']
+            const platformHost = payload['CF_PLATFORM_URL']
             host = await Utils.getRuntimeIngressHost(runtimeName, headers, platformHost)
             delete payload['CF_RUNTIME_NAME']
+            delete payload['CF_PLATFORM_URL']
         }
         delete payload['CF_API_KEY']
         const qs = Object.entries(payload).map(kv => `${esc(kv[0])}=${esc(kv[1] || '')}`).join('&')

@@ -11,7 +11,7 @@ inputs:
   CF_HOST:
     description: "Codefresh runtime exposed in cluster address: https://your.clusters.ci-cd.com/app-proxy"
     required: false
-  CF_HOST_URL:
+  CF_PLATFORM_URL:
     description: "Codefresh platform url"
     required: false
   CF_RUNTIME_NAME:
@@ -116,7 +116,7 @@ runs:
       env:
         VERSION: "${{ inputs.VERSION }}"
         CF_HOST: "${{ inputs.CF_HOST }}"
-        CF_HOST_URL: "${{ inputs.CF_HOST.URL }}"
+        CF_PLATFORM_URL: "${{ inputs.CF_PLATFORM_URL }}"
         CF_RUNTIME_NAME: "${{ inputs.CF_RUNTIME_NAME }}"
         CF_API_KEY: "${{ inputs.CF_API_KEY }}"
         
