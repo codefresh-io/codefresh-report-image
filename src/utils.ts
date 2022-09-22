@@ -17,7 +17,8 @@ export namespace Utils {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
-            host = await Utils.getRuntimeIngressHost(runtimeName, headers)
+            const platformHost = payload['CF_HOST_URL']
+            host = await Utils.getRuntimeIngressHost(runtimeName, headers, platformHost)
             delete payload['CF_RUNTIME_NAME']
         }
         delete payload['CF_API_KEY']
