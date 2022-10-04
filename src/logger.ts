@@ -1,7 +1,6 @@
 import winston from 'winston'
 import chalk from 'chalk'
 
-const format = winston.format
 const paint = (kind, message) => {
     const painter = {
         error: chalk.red,
@@ -17,14 +16,14 @@ const paint = (kind, message) => {
 
 
 export const logger = winston.createLogger({
-    format: format.printf((info) => {
+    format: winston.format.printf((info) => {
         return paint(info.level, `${info.message}`)
     }),
-    transports: [ new winston.transports.Console() ],
+    transports: [ new winston.transports.Console({ level: process.env.DEBUG === '1' ?  'debug' : 'info' }) ],
 })
 
 export const workflowLogger = winston.createLogger({
-    format: format.printf((info) => {
+    format: winston.format.printf((info) => {
         let logMessage = `${info.message}`
         if (info.pod) {
             logMessage = `[${info.pod}] ${logMessage}`
