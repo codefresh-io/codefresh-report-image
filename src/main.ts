@@ -7,7 +7,7 @@ import { logger, workflowLogger } from './logger'
 
 const { EventSourceError } = errors
 
-const INITIAL_HEARTBEAT_TIMEOUT_IN_SEC = Number(process.env.INITIAL_HEARTBEAT_TIMEOUT) || 5
+const INITIAL_HEARTBEAT_TIMEOUT_IN_SEC = Number(process.env.INITIAL_HEARTBEAT_TIMEOUT_IN_SECONDS) || 5
 
 /**
  * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
