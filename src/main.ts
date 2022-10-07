@@ -7,6 +7,7 @@ import { logger, workflowLogger } from './logger'
 
 const { EventSourceError } = errors
 
+const INITIAL_HEARTBEAT_TIMEOUT_IN_SEC = Number(process.env.INITIAL_HEARTBEAT_TIMEOUT_IN_SECONDS) || 5
 
 /**
  * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
@@ -26,12 +27,21 @@ async function main(argv, env): Promise<void> {
         logger.info(`CI provider: ${payload['CF_CI_TYPE']}, job URL: ${payload['CF_WORKFLOW_URL']}`)
     }
     const eventSource = new EventSource(url, { headers })
-    eventSource.reconnectInterval = 1000*10000 // prevent retry. client should not issue a reconnect
+    eventSource.reconnectInterval = 1000 * 100000 // prevent retry. client should not issue a reconnect
+
+    let heartbeatTimer: Utils.Timer
+
     const waitFor = new Promise<void>((resolve, reject) => {
-        
-        eventSource.addEventListener('report', function (event) {
-            logger.info(JSON.stringify(JSON.parse(event.data), null, 2))
+
+        eventSource.addEventListener('open', function () {
+            logger.debug('event-source connected')
+
+            heartbeatTimer = Utils.createHeartbeatTimer(() => {
+                logger.debug(`missing heartbeat after ${heartbeatTimer.timeoutTime / 1000} seconds`)
+                heartbeatTimer.restart()
+            }, INITIAL_HEARTBEAT_TIMEOUT_IN_SEC * 1000)
         })
+
         eventSource.addEventListener('info', function (event) {
             logger.info(event.data)
         })
@@ -46,7 +56,22 @@ async function main(argv, env): Promise<void> {
                 workflowLogger.info(event.data)
             }
         })
+        eventSource.addEventListener('heartbeat', function (event) {
+            logger.debug(`heartbeat ${JSON.stringify(event)}`)
+
+            const heartBeatInterval = Number(event.data)
+            if (heartBeatInterval) {
+                const extraGap = 1 * 1000
+                heartbeatTimer.restart(heartBeatInterval + extraGap)
+            } else {
+                heartbeatTimer.restart()
+            }
+        })
         eventSource.addEventListener('error', (errorEvent) => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (heartbeatTimer) {
+                heartbeatTimer.stop()
+            }
             eventSource.close()
 
             const error = Utils.tryParseJson(errorEvent.data)
@@ -67,7 +92,12 @@ async function main(argv, env): Promise<void> {
             reject(new EventSourceError(message, name))
         })
         eventSource.addEventListener('end', (event) => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (heartbeatTimer) {
+                heartbeatTimer.stop()
+            }
             eventSource.close()
+
             logger.info(event.data)
             resolve()
         })

@@ -57,5 +57,26 @@ export namespace Utils {
             return str
         }
     }
+
+    export type Timer = {
+        timeoutTime: number,
+        restart: (timeoutMs?: number) => void,
+        stop: () => void,
+    }
+
+    export function createHeartbeatTimer(cb: () => void, timeoutTime: number): Timer {
+        let timeout: NodeJS.Timeout = setTimeout(cb, timeoutTime)
+
+        return {
+            timeoutTime,
+            restart(_timeoutMs?: number) {
+                this.stop()
+                timeout = setTimeout(cb, _timeoutMs || this.timeoutTime)
+            },
+            stop() {
+                clearTimeout(timeout)
+            }
+        }
+    }
 }
 
