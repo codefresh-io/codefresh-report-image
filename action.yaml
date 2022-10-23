@@ -25,7 +25,10 @@ inputs:
     required: true
   CF_CONTAINER_REGISTRY_INTEGRATION:
     required: false
-    description: "list of container integration"
+    description: "The container registry integration name"
+  CF_ISSUE_TRACKING_INTEGRATION:
+    required: false
+    description: "The issue tracking integration name"
   CF_DOCKERHUB_USERNAME:
     required: false
     description: "Dockerhub username"
@@ -56,7 +59,7 @@ inputs:
   # Enrichers
   CF_ENRICHERS:
     required: false
-    description: "list of integrations separated by commas: jira, github"
+    description: "list of integrations separated by commas: Acceptable values are git, jira"
   # GIT
   CF_GIT_PROVIDER:
     required: false
@@ -172,7 +175,6 @@ runs:
         # built vars
         export CF_WORKFLOW_URL="${CF_WORKFLOW_URL:-$GITHUB_WORKFLOW_URL}"
         export CF_WORKFLOW_NAME="${CF_WORKFLOW_NAME:-$GITHUB_WORKFLOW_NAME}"
-        export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
         export CF_CI_TYPE=github-actions
         
         env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
