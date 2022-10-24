@@ -59,11 +59,11 @@ inputs:
   # Enrichers
   CF_ENRICHERS:
     required: false
-    description: "list of integrations separated by commas: Acceptable values are git, jira.
+    description: "*deprecated* list of integrations separated by commas: Acceptable values are git, jira. ex: 'jira, git'"
   # GIT
   CF_GIT_PROVIDER:
     required: false
-    description: "Git provider"
+    description: "Git provider - in case this is "
   CF_GIT_REPO:
     required: false
     description: "The GitHub repo to use to enrich"

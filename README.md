@@ -49,8 +49,8 @@ Commit that resulted in the image being built
     # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
     CF_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Name of Jira integration
-    CF_JIRA_INTEGRATION: 'eti-jira'
+    # Name of Issue Tracking integration
+    CF_ISSUE_TRACKING_INTEGRATION: 'eti-jira'
 
     # Jira project filter
     CF_JIRA_PROJECT_PREFIX: 'CR'
