@@ -59,7 +59,7 @@ inputs:
   # Enrichers
   CF_ENRICHERS:
     required: false
-    description: "list of integrations separated by commas: Acceptable values are git, jira. ex: 'jira, git'"
+    description: "list of integrations separated by commas: Acceptable values are git, jira.
   # GIT
   CF_GIT_PROVIDER:
     required: false
