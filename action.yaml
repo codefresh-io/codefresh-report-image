@@ -21,7 +21,7 @@ inputs:
     description: "verbose output"
     required: false
   CF_IMAGE:
-    description: image reported, quay.io/codefresh/newly-built-image:0.0.1
+    description: "image reported, quay.io/codefresh/newly-built-image:0.0.1"
     required: true
   CF_CONTAINER_REGISTRY_INTEGRATION:
     required: false
@@ -59,7 +59,7 @@ inputs:
   # Enrichers
   CF_ENRICHERS:
     required: false
-    description: "list of integrations separated by commas: Acceptable values are git, jira"
+    description: "list of integrations separated by commas: Acceptable values are git, jira. ex: 'jira, git'"
   # GIT
   CF_GIT_PROVIDER:
     required: false
@@ -126,6 +126,7 @@ runs:
         CF_IMAGE: "${{ inputs.CF_IMAGE }}"
         CF_VERBOSE: "${{ inputs.CF_VERBOSE }}"
         CF_CONTAINER_REGISTRY_INTEGRATION: "${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}"
+        CF_ISSUE_TRACKING_INTEGRATION: "${{ inputs.CF_ISSUE_TRACKING_INTEGRATION }}"
         CF_DOCKERHUB_USERNAME: "${{ inputs.CF_DOCKERHUB_USERNAME }}"
         CF_DOCKERHUB_PASSWORD: "${{ inputs.CF_DOCKERHUB_PASSWORD }}"
         CF_REGISTRY_USERNAME: "${{ inputs.CF_REGISTRY_USERNAME }}"
