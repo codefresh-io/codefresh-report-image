@@ -176,6 +176,7 @@ runs:
         # built vars
         export CF_WORKFLOW_URL="${CF_WORKFLOW_URL:-$GITHUB_WORKFLOW_URL}"
         export CF_WORKFLOW_NAME="${CF_WORKFLOW_NAME:-$GITHUB_WORKFLOW_NAME}"
+        export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
         export CF_CI_TYPE=github-actions
         
         env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
