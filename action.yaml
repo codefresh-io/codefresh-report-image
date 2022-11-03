@@ -21,11 +21,14 @@ inputs:
     description: "verbose output"
     required: false
   CF_IMAGE:
-    description: image reported, quay.io/codefresh/newly-built-image:0.0.1
+    description: "image reported, quay.io/codefresh/newly-built-image:0.0.1"
     required: true
   CF_CONTAINER_REGISTRY_INTEGRATION:
     required: false
-    description: "list of container integration"
+    description: "The container registry integration name"
+  CF_ISSUE_TRACKING_INTEGRATION:
+    required: false
+    description: "The issue tracking integration name"
   CF_DOCKERHUB_USERNAME:
     required: false
     description: "Dockerhub username"
@@ -56,11 +59,11 @@ inputs:
   # Enrichers
   CF_ENRICHERS:
     required: false
-    description: "list of integrations separated by commas: jira, github"
+    description: "*deprecated* list of integrations separated by commas: Acceptable values are git, jira. ex: 'jira, git'"
   # GIT
   CF_GIT_PROVIDER:
     required: false
-    description: "Git provider"
+    description: "The Git provider: Acceptable values are github, gitlab, bitbucket, or bitbucket-server. In case this not provided git credentials will be taken form your runtime git context"
   CF_GIT_REPO:
     required: false
     description: "The GitHub repo to use to enrich"
@@ -123,6 +126,7 @@ runs:
         CF_IMAGE: "${{ inputs.CF_IMAGE }}"
         CF_VERBOSE: "${{ inputs.CF_VERBOSE }}"
         CF_CONTAINER_REGISTRY_INTEGRATION: "${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}"
+        CF_ISSUE_TRACKING_INTEGRATION: "${{ inputs.CF_ISSUE_TRACKING_INTEGRATION }}"
         CF_DOCKERHUB_USERNAME: "${{ inputs.CF_DOCKERHUB_USERNAME }}"
         CF_DOCKERHUB_PASSWORD: "${{ inputs.CF_DOCKERHUB_PASSWORD }}"
         CF_REGISTRY_USERNAME: "${{ inputs.CF_REGISTRY_USERNAME }}"
