@@ -46,7 +46,7 @@ inputs:
     description: "Generic registry domain"
   CF_INSECURE:
     required: false
-    description: "security flag for standard registry protocol, when set to true it enables http protocol"
+    description: "Disable TLS certificate validation for ALL of the https traffic during the reporting. It is NOT recommended, as it could make your application vulnerable to man-in-the-middle (MITM) attacks."
   CF_WORKFLOW_URL:
     required: false
     description: "external url for the workflow"
@@ -122,6 +122,8 @@ runs:
         CF_PLATFORM_URL: "${{ inputs.CF_PLATFORM_URL }}"
         CF_RUNTIME_NAME: "${{ inputs.CF_RUNTIME_NAME }}"
         CF_API_KEY: "${{ inputs.CF_API_KEY }}"
+
+        CF_INSECURE: "${{ inputs.CF_INSECURE }}"
         
         CF_IMAGE: "${{ inputs.CF_IMAGE }}"
         CF_VERBOSE: "${{ inputs.CF_VERBOSE }}"
@@ -132,7 +134,6 @@ runs:
         CF_REGISTRY_USERNAME: "${{ inputs.CF_REGISTRY_USERNAME }}"
         CF_REGISTRY_PASSWORD: "${{ inputs.CF_REGISTRY_PASSWORD }}"
         CF_REGISTRY_DOMAIN: "${{ inputs.CF_REGISTRY_DOMAIN }}"
-        CF_INSECURE: "${{ inputs.CF_INSECURE }}"
         CF_WORKFLOW_URL: "${{ inputs.CF_WORKFLOW_URL }}"
         CF_WORKFLOW_NAME: "${{ inputs.CF_WORKFLOW_NAME }}"
         CF_LOGS_URL: "${{ inputs.CF_LOGS_URL }}"
@@ -178,6 +179,8 @@ runs:
         export CF_WORKFLOW_NAME="${CF_WORKFLOW_NAME:-$GITHUB_WORKFLOW_NAME}"
         export CF_GIT_PROVIDER="${CF_GIT_PROVIDER:-github}"
         export CF_CI_TYPE=github-actions
+
+        export NODE_TLS_REJECT_UNAUTHORIZED=$([[ "$CF_INSECURE" == "true" ]] && echo 0 || echo 1)
         
         env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
         echo "Provided env vars: $(cat cf_env|xargs echo)"
