@@ -9,6 +9,9 @@ inputs:
     description: Underling reporter image used by plugin
     required: false
     default: quay.io/codefresh/codefresh-report-image
+  VERBOSE:
+    description: "Verbose output"
+    required: false
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -21,9 +24,6 @@ inputs:
   CF_RUNTIME_NAME:
     description: "Codefresh runtime name"
     required: true
-  CF_VERBOSE:
-    description: "verbose output"
-    required: false
   CF_IMAGE:
     description: "image reported, quay.io/codefresh/newly-built-image:0.0.1"
     required: true
@@ -123,6 +123,7 @@ runs:
       env:
         VERSION: "${{ inputs.VERSION }}"
         IMAGE: "${{ inputs.IMAGE }}"
+        VERBOSE: "${{ inputs.VERBOSE }}"
         CF_HOST: "${{ inputs.CF_HOST }}"
         CF_PLATFORM_URL: "${{ inputs.CF_PLATFORM_URL }}"
         CF_RUNTIME_NAME: "${{ inputs.CF_RUNTIME_NAME }}"
@@ -131,7 +132,6 @@ runs:
         CF_INSECURE: "${{ inputs.CF_INSECURE }}"
         
         CF_IMAGE: "${{ inputs.CF_IMAGE }}"
-        CF_VERBOSE: "${{ inputs.CF_VERBOSE }}"
         CF_CONTAINER_REGISTRY_INTEGRATION: "${{ inputs.CF_CONTAINER_REGISTRY_INTEGRATION }}"
         CF_ISSUE_TRACKING_INTEGRATION: "${{ inputs.CF_ISSUE_TRACKING_INTEGRATION }}"
         CF_DOCKERHUB_USERNAME: "${{ inputs.CF_DOCKERHUB_USERNAME }}"
