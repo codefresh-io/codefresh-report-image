@@ -16,7 +16,7 @@ async function main(argv, env): Promise<void> {
     const payload = validate(env)
     const { url, headers } = await Utils.buildUrlHeaders(payload)
 
-    const verbose = argv.includes('verbose') || payload['VERBOSE']
+    const verbose = argv.includes('verbose') || env['CF_VERBOSE']
 
     if (verbose) {
         logger.debug(`reject unauthorized: ${env['NODE_TLS_REJECT_UNAUTHORIZED']}`)
