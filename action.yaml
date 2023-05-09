@@ -2,9 +2,13 @@ name: 'codefresh-report-image'
 description: 'Report image to codefresh'
 inputs:
   VERSION:
-    description: specify client version
+    description: Underling reporter image version used by plugin
     required: false
     default: latest
+  IMAGE:
+    description: Underling reporter image used by plugin
+    required: false
+    default: quay.io/codefresh/codefresh-report-image
   CF_API_KEY:
     description: "Codefresh API KEY"
     required: true
@@ -118,6 +122,7 @@ runs:
     - shell: bash
       env:
         VERSION: "${{ inputs.VERSION }}"
+        IMAGE: "${{ inputs.IMAGE }}"
         CF_HOST: "${{ inputs.CF_HOST }}"
         CF_PLATFORM_URL: "${{ inputs.CF_PLATFORM_URL }}"
         CF_RUNTIME_NAME: "${{ inputs.CF_RUNTIME_NAME }}"
@@ -185,4 +190,4 @@ runs:
         
         env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
         echo "Provided env vars: $(cat cf_env|xargs echo)"
-        docker run -e NODE_TLS_REJECT_UNAUTHORIZED=$NODE_TLS_REJECT_UNAUTHORIZED --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
+        docker run -e NODE_TLS_REJECT_UNAUTHORIZED=$NODE_TLS_REJECT_UNAUTHORIZED --env-file=cf_env "$IMAGE:$VERSION"
