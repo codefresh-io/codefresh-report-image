@@ -16,7 +16,8 @@ async function main(argv, env): Promise<void> {
     const payload = validate(env)
     const { url, headers } = await Utils.buildUrlHeaders(payload)
 
-    logger.debug(`reject unauthorized: ${env['NODE_TLS_REJECT_UNAUTHORIZED'] === '0'}`)
+    logger.debug(`skip TLS verification on client: ${env['NODE_TLS_REJECT_UNAUTHORIZED'] === '0'}`)
+    logger.debug(`skip TLS verification on workflow: ${env['CF_INSECURE'] === 'true'}`)
     logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
     logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
 

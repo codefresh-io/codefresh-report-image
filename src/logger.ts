@@ -14,7 +14,7 @@ const paint = (kind, message) => {
     return message
 }
 
-const debugEnabled = process.env.DEBUG === '1' || process.env.CF_VERBOSE === '1'
+const debugEnabled = process.env.DEBUG === '1' || process.env.CF_VERBOSE === 'true'
 
 export const logger = winston.createLogger({
     format: winston.format.printf((info) => {
