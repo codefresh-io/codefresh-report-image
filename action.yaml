@@ -181,7 +181,8 @@ runs:
         export CF_CI_TYPE=github-actions
 
         export NODE_TLS_REJECT_UNAUTHORIZED=$([[ "$CF_INSECURE" == "true" ]] && echo 0 || echo 1)
+        echo "NODE_TLS_REJECT_UNAUTHORIZED=$NODE_TLS_REJECT_UNAUTHORIZED"
         
         env | cut -f 1 -d "=" | grep -E "^CF_"  > cf_env
         echo "Provided env vars: $(cat cf_env|xargs echo)"
-        docker run --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
+        docker run -e NODE_TLS_REJECT_UNAUTHORIZED=$NODE_TLS_REJECT_UNAUTHORIZED --env-file=cf_env "quay.io/codefresh/codefresh-report-image:$VERSION"
