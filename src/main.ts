@@ -16,13 +16,10 @@ async function main(argv, env): Promise<void> {
     const payload = validate(env)
     const { url, headers } = await Utils.buildUrlHeaders(payload)
 
-    const verbose = argv.includes('verbose') || env['CF_VERBOSE']
+    logger.debug(`reject unauthorized: ${env['NODE_TLS_REJECT_UNAUTHORIZED'] === '0'}`)
+    logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
+    logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
 
-    if (verbose) {
-        logger.debug(`reject unauthorized: ${env['NODE_TLS_REJECT_UNAUTHORIZED']}`)
-        logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
-        logger.debug(`sending request: ${url}, headers: ${JSON.stringify(headers)}`)
-    }
     if (payload['CF_CI_TYPE'] && payload['CF_WORKFLOW_URL']) {
         logger.info(`CI provider: ${payload['CF_CI_TYPE']}, job URL: ${payload['CF_WORKFLOW_URL']}`)
     }
