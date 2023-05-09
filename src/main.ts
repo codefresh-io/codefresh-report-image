@@ -13,12 +13,11 @@ const INITIAL_HEARTBEAT_TIMEOUT_IN_SEC = Number(process.env.INITIAL_HEARTBEAT_TI
  * Take (CF_ prefixed) Env variables and perform http/s request (SSE) to app-proxy for image-report with CF_ENRICHERS
  */
 async function main(argv, env): Promise<void> {
-    const verbose = argv.includes('verbose') || env['VERBOSE']
-    if (verbose) {
-        logger.debug('running with verbose log')
-    }
     const payload = validate(env)
     const { url, headers } = await Utils.buildUrlHeaders(payload)
+
+    const verbose = argv.includes('verbose') || payload['VERBOSE']
+
     if (verbose) {
         logger.debug(`reject unauthorized: ${env['NODE_TLS_REJECT_UNAUTHORIZED']}`)
         logger.debug(`payload: ${JSON.stringify(payload, null, 2)}`)
