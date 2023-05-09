@@ -14,12 +14,13 @@ const paint = (kind, message) => {
     return message
 }
 
+const debugEnabled = process.env.DEBUG === '1' || process.env.CF_VERBOSE === 'true'
 
 export const logger = winston.createLogger({
     format: winston.format.printf((info) => {
         return paint(info.level, `${info.message}`)
     }),
-    transports: [ new winston.transports.Console({ level: process.env.DEBUG === '1' ?  'debug' : 'info' }) ],
+    transports: [ new winston.transports.Console({ level: debugEnabled ?  'debug' : 'info' }) ],
 })
 
 export const workflowLogger = winston.createLogger({
