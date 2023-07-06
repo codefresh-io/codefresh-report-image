@@ -48,6 +48,12 @@ inputs:
   CF_REGISTRY_DOMAIN:
     required: false
     description: "Generic registry domain"
+  CF_GOOGLE_JSON_KEY:
+    required: false
+    description: "GCP Service Account key in JSON format"
+  CF_GOOGLE_REGISTRY_HOST:
+    required: false
+    description: "GAR|GCR host. E.g., 'us-central1-docker.pkg.dev' or 'gcr.io'"
   CF_INSECURE:
     required: false
     description: "Disable TLS certificate validation for ALL of the https traffic during the reporting. It is NOT recommended, as it could make your application vulnerable to man-in-the-middle (MITM) attacks."
