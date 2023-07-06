@@ -145,6 +145,8 @@ runs:
         CF_REGISTRY_USERNAME: "${{ inputs.CF_REGISTRY_USERNAME }}"
         CF_REGISTRY_PASSWORD: "${{ inputs.CF_REGISTRY_PASSWORD }}"
         CF_REGISTRY_DOMAIN: "${{ inputs.CF_REGISTRY_DOMAIN }}"
+        CF_GOOGLE_JSON_KEY: "${{ inputs.CF_GOOGLE_JSON_KEY }}"
+        CF_GOOGLE_REGISTRY_HOST: "${{ inputs.CF_GOOGLE_REGISTRY_HOST }}"
         CF_WORKFLOW_URL: "${{ inputs.CF_WORKFLOW_URL }}"
         CF_WORKFLOW_NAME: "${{ inputs.CF_WORKFLOW_NAME }}"
         CF_LOGS_URL: "${{ inputs.CF_LOGS_URL }}"
