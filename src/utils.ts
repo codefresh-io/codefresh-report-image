@@ -27,6 +27,11 @@ export namespace Utils {
         }
         delete payload['CF_API_KEY']
         if (shouldStorePayloadInHeaders) {
+            const dockerFileContent = payload['CF_DOCKERFILE_CONTENT']
+            if (dockerFileContent) {
+                headers['CF_DOCKERFILE_CONTENT'] = dockerFileContent
+                delete payload['CF_DOCKERFILE_CONTENT']
+            }
             const qs = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
             const data = Buffer.from(qs, 'binary').toString('base64')
             headers['CF_DATA'] = data
