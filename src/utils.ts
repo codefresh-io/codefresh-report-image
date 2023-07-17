@@ -85,8 +85,6 @@ export namespace Utils {
                     const compressedDockerfile = await deflateAsync(Buffer.from(dockerfile, 'base64'), { level: 9, strategy: 0 })
                     delete payload['CF_DOCKERFILE_CONTENT']
                     payload['CF_DOCKERFILE_CONTENT'] = compressedDockerfile.toString('base64')
-                    // const decCompressedPayload2 = await inflateSync(Buffer.from(compressedDockerfile, 'base64'), { level: 9, strategy: 0 }).toString()
-                    // console.log(decCompressedPayload2)
                 }
                 const qs = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
                 const compressedPayload = await deflateAsync(Buffer.from(qs), { level: 9, strategy: 0 })
