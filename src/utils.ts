@@ -18,13 +18,13 @@ export namespace Utils {
      export async function buildUrlHeaders(payload: Record<string, string | undefined>): Promise<{ url: string, headers: { authorization: string } }> {
         const headers = { 'authorization': payload['CF_API_KEY']! }
         const runtimeName = payload['CF_RUNTIME_NAME']
-        const platformHost = payload['CF_PLATFORM_URL']
         let host
         let runtimeVersion
         if (!runtimeName) {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
+            const platformHost = payload['CF_PLATFORM_URL'] || 'https://g.codefresh.io'
             const runtimeInfo = await Utils.getRuntimeInfo(runtimeName, headers, platformHost)
             host = runtimeInfo.ingressHost
             runtimeVersion = runtimeInfo.runtimeVersion
@@ -32,7 +32,15 @@ export namespace Utils {
             delete payload['CF_PLATFORM_URL']
         }
         delete payload['CF_API_KEY']
-        const qs = await this.getQueryString(payload, headers, platformHost, runtimeName, runtimeVersion)
+        let qs
+        const shouldCompressData = runtimeVersion && gte(runtimeVersion, '0.0.553')
+        if (shouldCompressData) {
+            logger.info('Used new logic to send variables')
+            qs = await this.getQueryStringCompressed(payload)
+        } else {
+            qs = await this.getQueryString(payload)
+        }
+
         const url = `${host}/app-proxy/api/image-report?${qs}`
         if (payload['CF_LOCAL']) {
             return { url: `${host}/api/image-report?${qs}`, headers }
@@ -40,7 +48,7 @@ export namespace Utils {
         return { url, headers }
     }
 
-    export async function getRuntimeInfo(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<{ ingressHost: string, runtimeVersion: string }> {
+    export async function getRuntimeInfo(runtimeName: string, headers: Record<string, string>, platformHost): Promise<{ ingressHost: string, runtimeVersion: string }> {
         const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
             headers
         })
@@ -63,26 +71,22 @@ export namespace Utils {
         return { ingressHost, runtimeVersion }
     }
 
-    export async function getQueryString(payload: Record<string, string | undefined>, headers: any, platformHost= 'https://g.codefresh.io', runtimeName?: string, runtimeVersion?: string): Promise<string> {
-         const esc = encodeURIComponent
-         if (runtimeName && runtimeVersion) {
-            const shouldCompressData = gte(runtimeVersion, '0.0.553')
-            if (shouldCompressData) {
-                logger.info('Start encoding variables')
-                const dockerfile = payload['CF_DOCKERFILE_CONTENT']
-                if (dockerfile) {
-                    const compressedDockerfile = await deflateAsync(Buffer.from(dockerfile, 'base64'), { level: 9, strategy: 0 })
-                    delete payload['CF_DOCKERFILE_CONTENT']
-                    payload['CF_DOCKERFILE_CONTENT'] = compressedDockerfile.toString('base64')
-                }
-                const qsNoEscaping = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
-                const compressedPayload = await deflateAsync(Buffer.from(qsNoEscaping), { level: 9, strategy: 0 })
-                const data = compressedPayload.toString('base64')
-                logger.info('Variables successfully encoded')
-                return `data=${esc(data)}`
-            }
+    export async function getQueryStringCompressed(payload: Record<string, string | undefined>): Promise<string> {
+        logger.debug('Start encoding variables')
+        const dockerfile = payload['CF_DOCKERFILE_CONTENT']
+        if (dockerfile) {
+            const compressedDockerfile = await deflateAsync(Buffer.from(dockerfile, 'base64'), { level: 9, strategy: 0 })
+            payload['CF_DOCKERFILE_CONTENT'] = compressedDockerfile.toString('base64')
         }
-        return Object.entries(payload).map(kv => `${esc(kv[0])}=${esc(kv[1] || '')}`).join('&')
+        const qsNoEscaping = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
+        const compressedPayload = await deflateAsync(Buffer.from(qsNoEscaping), { level: 9, strategy: 0 })
+        const data = compressedPayload.toString('base64')
+        logger.debug('Variables successfully encoded')
+        return `data=${encodeURIComponent(data)}`
+    }
+
+    export async function getQueryString(payload: Record<string, string | undefined>) {
+        return Object.entries(payload).map(kv => `${encodeURIComponent(kv[0])}=${encodeURIComponent(kv[1] || '')}`).join('&')
     }
 
     export function tryParseJson (str: string) {
