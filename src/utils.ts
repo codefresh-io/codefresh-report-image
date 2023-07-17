@@ -20,16 +20,19 @@ export namespace Utils {
         const runtimeName = payload['CF_RUNTIME_NAME']
         const platformHost = payload['CF_PLATFORM_URL']
         let host
+        let runtimeVersion
         if (!runtimeName) {
             host = payload['CF_HOST']
             delete payload['CF_HOST']
         } else {
-            host = await Utils.getRuntimeIngressHost(runtimeName, headers, platformHost)
+            const runtimeInfo = await Utils.getRuntimeInfo(runtimeName, headers, platformHost)
+            host = runtimeInfo.ingressHost
+            runtimeVersion = runtimeInfo.runtimeVersion
             delete payload['CF_RUNTIME_NAME']
             delete payload['CF_PLATFORM_URL']
         }
         delete payload['CF_API_KEY']
-        const qs = await this.getQueryString(payload, headers, platformHost, runtimeName)
+        const qs = await this.getQueryString(payload, headers, platformHost, runtimeName, runtimeVersion)
         const url = `${host}/app-proxy/api/image-report?${qs}`
         if (payload['CF_LOCAL']) {
             return { url: `${host}/api/image-report?${qs}`, headers }
@@ -37,7 +40,7 @@ export namespace Utils {
         return { url, headers }
     }
 
-    export async function getRuntimeIngressHost(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<string> {
+    export async function getRuntimeInfo(runtimeName: string, headers: Record<string, string>, platformHost = 'https://g.codefresh.io'): Promise<{ ingressHost: string, runtimeVersion: string }> {
         const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
             headers
         })
@@ -45,40 +48,24 @@ export namespace Utils {
         const getRuntimeIngressHostQuery = gql`
             query Runtime($name: String!) {
                 runtime(name: $name) {
-                    ingressHost
+                    ingressHost,
+                    runtimeVersion
                 }
             }`
 
         const res = await graphQLClient.request(getRuntimeIngressHostQuery, { name: runtimeName })
         const ingressHost = get(res, 'runtime.ingressHost')
+        const runtimeVersion = get(res, 'runtime.runtimeVersion', '')
         if (!ingressHost) {
             const message = res.runtime ? `ingress host is not defined on your '${runtimeName}' runtime` : `runtime '${runtimeName}' does not exist`
             throw new errors.ValidationError(message)
         }
-        return ingressHost
+        return { ingressHost, runtimeVersion }
     }
 
-    export async function getRuntimeVersion(headers: Record<string, string>, runtimeName?: string, platformHost = 'https://g.codefresh.io'): Promise<string> {
-        if (!runtimeName) {
-            return ''
-        }
-        const graphQLClient = new GraphQLClient(`${platformHost}/2.0/api/graphql`, {
-            headers
-        })
-        const getRuntimeIngressHostQuery = gql`
-            query Runtime($name: String!) {
-                runtime(name: $name) {
-                    runtimeVersion
-                }
-            }`
-        const res = await graphQLClient.request(getRuntimeIngressHostQuery, { name: runtimeName })
-        return get(res, 'runtime.runtimeVersion', '')
-    }
-
-    export async function getQueryString(payload: Record<string, string | undefined>, headers: any, platformHost: string, runtimeName?: string): Promise<string> {
+    export async function getQueryString(payload: Record<string, string | undefined>, headers: any, platformHost= 'https://g.codefresh.io', runtimeName?: string, runtimeVersion?: string): Promise<string> {
          const esc = encodeURIComponent
-         if (runtimeName) {
-            const runtimeVersion = await Utils.getRuntimeVersion(headers, runtimeName, platformHost)
+         if (runtimeName && runtimeVersion) {
             const shouldCompressData = gte(runtimeVersion, '0.0.553')
             if (shouldCompressData) {
                 logger.info('Start encoding variables')
