@@ -5,6 +5,7 @@ import { gte } from 'semver'
 import { deflate } from 'zlib'
 import { errors } from './errors'
 import { promisify } from 'util'
+import { logger } from './logger'
 
 
 const deflateAsync = promisify(deflate)
@@ -80,15 +81,17 @@ export namespace Utils {
             const runtimeVersion = await Utils.getRuntimeVersion(headers, runtimeName, platformHost)
             const shouldCompressData = gte(runtimeVersion, '0.0.553')
             if (shouldCompressData) {
+                logger.info('Start encoding variables')
                 const dockerfile = payload['CF_DOCKERFILE_CONTENT']
                 if (dockerfile) {
                     const compressedDockerfile = await deflateAsync(Buffer.from(dockerfile, 'base64'), { level: 9, strategy: 0 })
                     delete payload['CF_DOCKERFILE_CONTENT']
                     payload['CF_DOCKERFILE_CONTENT'] = compressedDockerfile.toString('base64')
                 }
-                const qs = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
-                const compressedPayload = await deflateAsync(Buffer.from(qs), { level: 9, strategy: 0 })
+                const qsNoEscaping = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
+                const compressedPayload = await deflateAsync(Buffer.from(qsNoEscaping), { level: 9, strategy: 0 })
                 const data = compressedPayload.toString('base64')
+                logger.info('Variables successfully encoded')
                 return `data=${esc(data)}`
             }
         }
