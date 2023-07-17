@@ -35,7 +35,7 @@ export namespace Utils {
         let qs
         const shouldCompressData = runtimeVersion && gte(runtimeVersion, '0.0.553')
         if (shouldCompressData) {
-            logger.info('Used new logic to send variables')
+            logger.info('The new logic to send variables is used')
             qs = await this.getQueryStringCompressed(payload)
         } else {
             qs = await this.getQueryString(payload)
