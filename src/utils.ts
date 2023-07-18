@@ -33,12 +33,12 @@ export namespace Utils {
         }
         delete payload['CF_API_KEY']
         let qs
-        const shouldCompressData = runtimeVersion && gte(runtimeVersion, '0.0.553')
+        const shouldCompressData = runtimeVersion && gte(removeReleaseCandidatePrefixFromRuntimeVersion(runtimeVersion), '0.0.553')
         if (shouldCompressData) {
             logger.info('Using new query string format')
             qs = await this.getQueryStringCompressed(payload)
         } else {
-            qs = await this.getQueryString(payload)
+            qs = this.getQueryString(payload)
         }
 
         const url = `${host}/app-proxy/api/image-report?${qs}`
@@ -78,15 +78,20 @@ export namespace Utils {
             const compressedDockerfile = await deflateAsync(Buffer.from(dockerfile, 'base64'), { level: 9, strategy: 0 })
             payload['CF_DOCKERFILE_CONTENT'] = compressedDockerfile.toString('base64')
         }
-        const qsNoEscaping = Object.entries(payload).map(kv => `${kv[0]}=${kv[1] || ''}`).join('&')
-        const compressedPayload = await deflateAsync(Buffer.from(qsNoEscaping), { level: 9, strategy: 0 })
+        const qs = this.getQueryString(payload)
+        const compressedPayload = await deflateAsync(Buffer.from(qs), { level: 9, strategy: 0 })
         const data = compressedPayload.toString('base64')
         logger.debug('Variables successfully encoded')
         return `data=${encodeURIComponent(data)}`
     }
 
-    export async function getQueryString(payload: Record<string, string | undefined>) {
+    export function getQueryString(payload: Record<string, string | undefined>) {
         return Object.entries(payload).map(kv => `${encodeURIComponent(kv[0])}=${encodeURIComponent(kv[1] || '')}`).join('&')
+    }
+
+    export function removeReleaseCandidatePrefixFromRuntimeVersion(runtimeVersion: string): string {
+        const [ runtimeVersionWithoutReleaseCandidatePrefix ] = runtimeVersion.split('-')
+        return runtimeVersionWithoutReleaseCandidatePrefix
     }
 
     export function tryParseJson (str: string) {
