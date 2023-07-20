@@ -33,7 +33,7 @@ export namespace Utils {
         }
         delete payload['CF_API_KEY']
         let qs
-        const shouldCompressData = runtimeVersion && gte(removeReleaseCandidatePrefixFromRuntimeVersion(runtimeVersion), '0.0.553')
+        const shouldCompressData = runtimeVersion && gte(removeReleaseCandidatePrefixFromRuntimeVersion(runtimeVersion), '0.1.33')
         if (shouldCompressData) {
             logger.info('Using new query string format')
             qs = await this.getQueryStringCompressed(payload)
