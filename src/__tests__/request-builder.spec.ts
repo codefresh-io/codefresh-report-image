@@ -13,7 +13,7 @@ describe('request builder test', () => {
 
     it('support CF_RUNTIME_NAME', async () => {
         const ingressHost = 'https://my.codefresh.ingress'
-        jest.spyOn(Utils, 'getRuntimeIngressHost').mockResolvedValue(ingressHost)
+        jest.spyOn(Utils, 'getRuntimeInfo').mockResolvedValue({ ingressHost, runtimeVersion: '' })
         const { url, headers } = await Utils.buildUrlHeaders({
                 'CF_API_KEY': 'the-token',
                 'CF_RUNTIME_NAME': 'runtime',
